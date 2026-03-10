@@ -1,80 +1,86 @@
 "use client";
 
-import Link from "next/link";
-import { Address } from "@scaffold-ui/components";
 import type { NextPage } from "next";
-import { hardhat } from "viem/chains";
-import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useTargetNetwork } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
-  const { address: connectedAddress } = useAccount();
-  const { targetNetwork } = useTargetNetwork();
-
   return (
-    <>
-      <div className="flex items-center flex-col grow pt-10">
-        <div className="px-5">
-          <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
+    <div className="min-h-screen bg-base-200">
+      <section className="grid lg:grid-cols-2 min-h-[calc(100vh-4rem)]">
+        <div className="flex flex-col justify-center px-8 lg:px-16 py-20 border-b lg:border-b-0 lg:border-r border-base-300">
+          <div className="flex items-center gap-2 mb-7">
+            <span className="w-5 h-px bg-primary" />
+            <span className="text-primary text-xs font-medium tracking-[0.2em] uppercase">
+              Hawaiian Coffee · On-Chain
+            </span>
+          </div>
+
+          <h1 className="flex flex-col gap-1 font-serif text-5xl lg:text-7xl font-light leading-[1.08] text-base-content mb-7">
+            <span>
+              <span className="italic text-accent">Trace</span> Every
+            </span>
+            <span className="font-semibold">Bean&apos;s Journey</span>
+            <span>to Your Cup</span>
           </h1>
-          <div className="flex justify-center items-center space-x-2 flex-col">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address
-              address={connectedAddress}
-              chain={targetNetwork}
-              blockExplorerAddressLink={
-                targetNetwork.id === hardhat.id ? `/blockexplorer/address/${connectedAddress}` : undefined
-              }
+
+          <p className="text-secondary text-base font-light leading-relaxed max-w-md mb-10">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sem erat, finibus non nisl nec, scelerisque
+            rutrum ligula. Cras dictum congue ante commodo posuere. Etiam imperdiet eu lacus facilisis ornare. Donec
+            eleifend nec quam ac suscipit.
+          </p>
+
+          <div className="flex flex-wrap gap-3 mb-10">
+            <button className="btn btn-primary px-7 text-sm tracking-wide">Track Your Coffee</button>
+            <button className="btn btn-ghost border border-base-300 px-7 text-sm tracking-wide">View on Chain</button>
+          </div>
+        </div>
+
+        <div className="flex flex-col justify-center px-8 lg:px-16 py-20 gap-6">
+          <div className="flex w-full bg-base-100 border border-base-300 rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-primary transition-all">
+            <input
+              type="text"
+              placeholder="Enter Batch ID..."
+              className="flex-1 bg-transparent px-5 py-4 text-base-content placeholder-secondary/50 outline-none"
             />
+            <button
+              type="button"
+              className="btn btn-ghost rounded-none border-0 border-l border-base-300 px-7 text-sm tracking-wide h-auto"
+            >
+              Submit
+            </button>
           </div>
 
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
-        </div>
-
-        <div className="grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col md:flex-row">
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
-              </p>
+          <div className="grid grid-cols-2 gap-px bg-base-300 border border-base-300 rounded-xl overflow-hidden">
+            <div className="bg-base-100 p-7 hover:bg-base-200 transition-colors">
+              <div className="font-serif text-5xl font-light text-base-content leading-none mb-1">---</div>
+              <div className="text-xs text-secondary uppercase tracking-widest">Batches Tracked</div>
             </div>
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
+
+            <div className="bg-base-100 p-7 hover:bg-base-200 transition-colors">
+              <div className="font-serif text-5xl font-light text-base-content leading-none mb-1">---</div>
+              <div className="text-xs text-secondary uppercase tracking-widest">Verified Farms</div>
+            </div>
+
+            <div className="bg-base-100 p-7 hover:bg-base-200 transition-colors">
+              <div className="font-serif text-5xl font-light text-base-content leading-none mb-1">---</div>
+              <div className="text-xs text-secondary uppercase tracking-widest">Islands</div>
+            </div>
+
+            <div className="bg-base-100 p-7 hover:bg-base-200 transition-colors">
+              <div className="font-serif text-5xl font-light text-base-content leading-none mb-1">---</div>
+              <div className="text-xs text-secondary uppercase tracking-widest">On-Chain Verified</div>
             </div>
           </div>
+
+          <div className="flex items-center gap-3 px-5 py-4 bg-base-100 border border-base-300 rounded-xl text-sm text-secondary">
+            <div className="inline-grid *:[grid-area:1/1]">
+              <div className="status status-success animate-ping"></div>
+              <div className="status status-success"></div>
+            </div>
+            Live · - new batches verified in the past day
+          </div>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 };
 

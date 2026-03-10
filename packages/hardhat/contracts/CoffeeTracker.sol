@@ -2,10 +2,10 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import "hardhat/console.sol";
-import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import { ERC1155 } from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract CoffeeTracker is ERC1155, AccessControl{
+contract CoffeeTracker is ERC1155, AccessControl {
     bytes32 public constant FARMER_ROLE = keccak256("FARMER_ROLE");
     bytes32 public constant PROCESSOR_ROLE = keccak256("PROCESSOR_ROLE");
     bytes32 public constant ROASTER_ROLE = keccak256("ROASTER_ROLE");
@@ -64,7 +64,6 @@ contract CoffeeTracker is ERC1155, AccessControl{
         string batchNumber;
         bool verified;
         uint256 mintTimestamp;
-
         // Origin & Harvesting
         address farmer;
         string farmName;
@@ -73,7 +72,6 @@ contract CoffeeTracker is ERC1155, AccessControl{
         uint16 elevation;
         uint256 harvestWeight;
         uint256 harvestDate;
-
         // Processing
         address processor;
         ProcessingMethod processingMethod;
@@ -83,7 +81,6 @@ contract CoffeeTracker is ERC1155, AccessControl{
         uint8 scaScore;
         uint8 humidity;
         uint16 dryTemperature;
-
         // Roasting
         address roaster;
         RoastingMethod roastingMethod;
@@ -97,13 +94,7 @@ contract CoffeeTracker is ERC1155, AccessControl{
     mapping(uint256 => CoffeeBatch) private batches;
     mapping(address => uint256[]) private userBatches;
 
-    constructor(
-        address admin,
-        address farmer,
-        address processor,
-        address roaster,
-        address distributor
-    ) ERC1155("") {
+    constructor(address admin, address farmer, address processor, address roaster, address distributor) ERC1155("") {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(FARMER_ROLE, farmer);
         _grantRole(PROCESSOR_ROLE, processor);
@@ -144,18 +135,11 @@ contract CoffeeTracker is ERC1155, AccessControl{
         RoastLevel roastLevel,
         string cuppingNotes,
         uint16 transportTime
-
     );
 
-    event Distributed(
-        uint256 indexed batchId,
-        address indexed distributor
-    );
+    event Distributed(uint256 indexed batchId, address indexed distributor);
 
-    event Verified(
-        uint256 indexed batchId,
-        address indexed verifier
-    );
+    event Verified(uint256 indexed batchId, address indexed verifier);
 
     function harvestBatch(
         string memory _batchNumber,
@@ -173,7 +157,6 @@ contract CoffeeTracker is ERC1155, AccessControl{
             batchNumber: _batchNumber,
             verified: false,
             mintTimestamp: block.timestamp,
-
             farmer: msg.sender,
             farmName: _farmName,
             region: _region,
@@ -181,7 +164,6 @@ contract CoffeeTracker is ERC1155, AccessControl{
             elevation: _elevation,
             harvestWeight: _harvestWeight,
             harvestDate: _harvestDate,
-
             processor: address(0),
             processingMethod: ProcessingMethod.Other,
             processingBeforeWeight: 0,
@@ -190,7 +172,6 @@ contract CoffeeTracker is ERC1155, AccessControl{
             scaScore: 0,
             humidity: 0,
             dryTemperature: 0,
-
             roaster: address(0),
             roastingMethod: RoastingMethod.Other,
             roastingBeforeWeight: 0,
@@ -231,7 +212,10 @@ contract CoffeeTracker is ERC1155, AccessControl{
     ) public onlyRole(PROCESSOR_ROLE) {
         CoffeeBatch storage batch = batches[_batchId];
         require(batch.batchId != 0, "This coffee batch doesn't exist!");
-        require(batch.processor == address(0) || batch.processor == msg.sender, "This coffee batch is already processed by another processor!");
+        require(
+            batch.processor == address(0) || batch.processor == msg.sender,
+            "This coffee batch is already processed by another processor!"
+        );
 
         if (batch.processor == address(0)) {
             userBatches[msg.sender].push(_batchId);
@@ -271,7 +255,10 @@ contract CoffeeTracker is ERC1155, AccessControl{
         CoffeeBatch storage batch = batches[_batchId];
         require(batch.batchId != 0, "This coffee batch doesn't exist!");
         require(batch.processor != address(0), "This coffee batch must be processed before roasting!");
-        require(batch.roaster == address(0) || batch.roaster == msg.sender, "This coffee batch is already roasted by another roaster!");
+        require(
+            batch.roaster == address(0) || batch.roaster == msg.sender,
+            "This coffee batch is already roasted by another roaster!"
+        );
 
         if (batch.roaster == address(0)) {
             userBatches[msg.sender].push(_batchId);
@@ -297,17 +284,12 @@ contract CoffeeTracker is ERC1155, AccessControl{
         );
     }
 
-    function distributeBatch(
-        uint256 _batchId
-    ) public onlyRole(DISTRIBUTOR_ROLE) {
+    function distributeBatch(uint256 _batchId) public onlyRole(DISTRIBUTOR_ROLE) {
         CoffeeBatch storage batch = batches[_batchId];
         require(batch.batchId != 0, "This coffee batch doesn't exist!");
         require(batch.roaster != address(0), "This coffee batch must be roasted before distribution!");
 
-        emit Distributed(
-            _batchId,
-            msg.sender
-        );
+        emit Distributed(_batchId, msg.sender);
     }
 
     function verifyBatch(uint256 _batchId) public onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -317,10 +299,7 @@ contract CoffeeTracker is ERC1155, AccessControl{
 
         batch.verified = true;
 
-        emit Verified(
-            _batchId, 
-            msg.sender
-        );
+        emit Verified(_batchId, msg.sender);
     }
 
     function getBatch(uint256 _batchId) public view returns (CoffeeBatch memory) {
@@ -332,7 +311,7 @@ contract CoffeeTracker is ERC1155, AccessControl{
         userRole = getRole(user);
         uint256[] memory ids = userBatches[user];
         history = new CoffeeBatch[](ids.length);
-        
+
         for (uint256 i = 0; i < ids.length; i++) {
             history[i] = batches[ids[i]];
         }
