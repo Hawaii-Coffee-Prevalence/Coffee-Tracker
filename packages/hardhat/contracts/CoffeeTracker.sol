@@ -48,6 +48,7 @@ contract CoffeeTracker is ERC1155, AccessControl {
         Drum,
         HotAir,
         FluidBed,
+        Infrared,
         Other
     }
 

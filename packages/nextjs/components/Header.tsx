@@ -23,8 +23,8 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/explore",
   },
   {
-    label: "Add",
-    href: "/add",
+    label: "Submit",
+    href: "/submit",
   },
   {
     label: "Debug",

@@ -12,8 +12,7 @@ export const MapSection = () => {
               Grown on the Islands
             </span>
             <h2 className="font-serif text-5xl lg:text-6xl font-light leading-[1.08] text-base-content">
-              <span className="font-semibold">Hawaiian </span>
-              <span className="italic text-accent">Coffee Belt</span>
+              <span className="font-semibold">Hawaiian Coffee Belt</span>
             </h2>
           </div>
         </div>

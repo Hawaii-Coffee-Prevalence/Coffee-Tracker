@@ -6,8 +6,8 @@ const deployCoffeeTracker: DeployFunction = async function (hre: HardhatRuntimeE
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  const adminAddress = process.env.ADMIN_WALLET || deployer;
-  const trustedAddress = process.env.TRUSTED_WALLET || deployer;
+  const adminAddress = hre.network.name === "localhost" ? deployer : process.env.ADMIN_WALLET || deployer;
+  const trustedAddress = hre.network.name === "localhost" ? deployer : process.env.TRUSTED_WALLET || deployer;
 
   console.log(`Deploying CoffeeTracker... Admin: ${adminAddress}, Trusted: ${trustedAddress}`);
 
