@@ -3,21 +3,24 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { NextPage } from "next";
+import { QrModal } from "~~/components/QrModal";
 import { BatchFilterBar } from "~~/components/explore/BatchFilterBar";
-import { BatchLookup } from "~~/components/explore/BatchLookup";
 import { BatchTable } from "~~/components/explore/BatchTable";
+import { ChartDashboard } from "~~/components/explore/ChartDashboard";
+import { DataDashboard } from "~~/components/explore/DataDashboard";
 import { useBatchPagination } from "~~/hooks/useBatchPagination";
-import { useCoffeeBatchTxHashes, useCoffeeTrackerBatches } from "~~/hooks/useCoffeeTracker";
+import { useCoffeeTracker } from "~~/hooks/useCoffeeTracker";
 import { BatchFilterState, CoffeeBatch, getStage } from "~~/types/coffee";
 
 const DEFAULT_FILTERS: BatchFilterState = { stage: "All", region: "all", sort: "newest" };
 
 const BlockExplorer: NextPage = () => {
   const searchParams = useSearchParams();
-  const { allBatches, isLoading } = useCoffeeTrackerBatches();
-  const { txHashMap } = useCoffeeBatchTxHashes();
+  const { stats, txHashMap, isLoading } = useCoffeeTracker();
+  const allBatches = stats?.allBatches;
   const [filters, setFilters] = useState<BatchFilterState>(DEFAULT_FILTERS);
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") ?? "");
+  const [qrOpen, setQrOpen] = useState(false);
 
   const batches = useMemo(() => {
     let list = [...((allBatches as unknown as CoffeeBatch[]) ?? [])];
@@ -53,10 +56,13 @@ const BlockExplorer: NextPage = () => {
 
   return (
     <div className="container mx-auto my-10">
-      <BatchLookup onSearch={setSearchQuery} />
+      <DataDashboard />
+      <ChartDashboard />
       <BatchFilterBar
         {...filters}
         onChange={setFilters}
+        onSearch={setSearchQuery}
+        onScanQr={() => setQrOpen(true)}
         pageSize={pageSize}
         onPageSizeChange={setPageSize}
         onClear={() => {
@@ -64,6 +70,7 @@ const BlockExplorer: NextPage = () => {
           setSearchQuery("");
         }}
       />
+      <QrModal isOpen={qrOpen} onClose={() => setQrOpen(false)} />
 
       <BatchTable
         batches={isLoading ? undefined : paginatedItems}

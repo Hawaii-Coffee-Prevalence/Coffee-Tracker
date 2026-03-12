@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef } from "react";
-import Map, { MapRef, NavigationControl } from "react-map-gl/maplibre";
+import MapGL, { MapRef, NavigationControl as NavControl } from "react-map-gl/maplibre";
+import { Skeleton } from "~~/components/Skeleton";
+
+const Map = MapGL as any;
+const NavigationControl = NavControl as any;
 
 const MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY;
 
@@ -71,7 +75,7 @@ export const Map3D = ({ className }: Map3DProps) => {
           <NavigationControl position="bottom-right" />
         </Map>
       ) : (
-        <div className="w-full h-full bg-base-200 animate-pulse rounded-xl" />
+        <Skeleton className="w-full h-full rounded-xl" />
       )}
     </div>
   );

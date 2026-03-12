@@ -1,4 +1,12 @@
-export const HeroSection = () => {
+import { useRouter } from "next/navigation";
+
+type Props = {
+  onOpenQr?: () => void;
+};
+
+export const HeroSection = ({ onOpenQr }: Props) => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col justify-center items-center lg:items-start text-center lg:text-start lg:pl-32 px-8 py-20">
       <div className="flex items-center gap-2 mb-7">
@@ -21,10 +29,16 @@ export const HeroSection = () => {
       </p>
 
       <div className="flex flex-nowrap gap-3 mb-10">
-        <button className="btn btn-primary px-7 text-sm tracking-wide flex-1 min-w-[10rem] text-nowrap">
+        <button
+          onClick={onOpenQr}
+          className="btn btn-primary px-7 text-sm tracking-wide flex-1 min-w-[10rem] text-nowrap"
+        >
           Track Your Coffee
         </button>
-        <button className="btn btn-ghost border px-7 text-sm tracking-wide flex-1 min-w-[10rem] text-nowrap">
+        <button
+          onClick={() => router.push("/explore")}
+          className="btn btn-ghost border px-7 text-sm tracking-wide flex-1 min-w-[10rem] text-nowrap"
+        >
           Explore the Chain
         </button>
       </div>

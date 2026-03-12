@@ -4,14 +4,14 @@ import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { BatchTable } from "../explore/BatchTable";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { useCoffeeBatchTxHashes, useCoffeeTrackerBatches } from "~~/hooks/useCoffeeTracker";
+import { useCoffeeTracker } from "~~/hooks/useCoffeeTracker";
 import { CoffeeBatch } from "~~/types/coffee";
 
 const RECENT_LIMIT = 5;
 
 export const ActivitySection = () => {
-  const { allBatches, isLoading } = useCoffeeTrackerBatches();
-  const { txHashMap } = useCoffeeBatchTxHashes();
+  const { stats, txHashMap, isLoading } = useCoffeeTracker();
+  const allBatches = stats?.allBatches;
   const router = useRouter();
 
   const recentBatches = useMemo(

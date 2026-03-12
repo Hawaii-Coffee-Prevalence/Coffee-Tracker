@@ -79,6 +79,43 @@ export const ROAST_LEVELS: Record<number, string> = {
   3: "Other",
 };
 
+export type PipelineData = {
+  harvested: number;
+  processed: number;
+  roasted: number;
+  distributed: number;
+};
+
+export type RegionData = { name: string; count: number }[];
+
+export type ScaBucket = { score: string; count: number };
+
+export const PIPELINE_SEGMENTS = [
+  { key: "harvested", label: "Harvested", color: "#4a6741" },
+  { key: "processed", label: "Processed", color: "#c1440e" },
+  { key: "roasted", label: "Roasted", color: "#b07d3a" },
+  { key: "distributed", label: "Distributed", color: "#7a5c3a" },
+] as const;
+
+export const SCA_TIERS = [
+  { min: 90, label: "Excellent", color: "#4a6741", qualityClass: "text-primary" },
+  { min: 86, label: "Very Good", color: "#4a6741cc", qualityClass: "text-primary" },
+  { min: 82, label: "Good", color: "#4a674199", qualityClass: "text-primary" },
+  { min: 0, label: "Below Specialty", color: "#4a674155", qualityClass: "text-secondary" },
+] as const;
+
+export const getScaTier = (score: number) => SCA_TIERS.find(t => score >= t.min) ?? SCA_TIERS[SCA_TIERS.length - 1];
+
+export const REGION_TO_ISLAND: Record<number, string> = {
+  0: "Hawai'i Island",
+  1: "Hawai'i Island",
+  2: "Hawai'i Island",
+  3: "Hawai'i Island",
+  4: "Maui",
+  5: "Kauai",
+  6: "Unknown",
+};
+
 export const STAGES = ["Harvested", "Processed", "Roasted", "Distributed"] as const;
 export type Stage = (typeof STAGES)[number];
 

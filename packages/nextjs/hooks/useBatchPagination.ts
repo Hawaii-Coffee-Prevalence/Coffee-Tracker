@@ -9,7 +9,7 @@ type UseBatchPaginationReturn<T> = {
   setPageSize: (size: number) => void;
 };
 
-export const useBatchPagination = <T>(items: T[], defaultPageSize = 5): UseBatchPaginationReturn<T> => {
+export const useBatchPagination = <T>(items: T[], defaultPageSize = 10): UseBatchPaginationReturn<T> => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(defaultPageSize);
 

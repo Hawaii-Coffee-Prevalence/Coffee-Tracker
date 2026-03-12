@@ -329,16 +329,6 @@ contract CoffeeTracker is ERC1155, AccessControl {
         return _batchIdCounter - 1;
     }
 
-    function getVerifiedCount() public view returns (uint256) {
-        uint256 count = 0;
-
-        for (uint256 i = 1; i < _batchIdCounter; i++) {
-            if (batches[i].verified) count++;
-        }
-
-        return count;
-    }
-
     function getTransactionCount() public view returns (uint256) {
         return _transactionCount;
     }
@@ -368,22 +358,6 @@ contract CoffeeTracker is ERC1155, AccessControl {
             allBatches[i - 1] = batches[i];
         }
         return allBatches;
-    }
-
-    function getVerifiedBatches() public view returns (CoffeeBatch[] memory) {
-        uint256 count = 0;
-
-        for (uint256 i = 1; i < _batchIdCounter; i++) {
-            if (batches[i].verified) count++;
-        }
-
-        CoffeeBatch[] memory verifiedBatches = new CoffeeBatch[](count);
-
-        uint256 _idx = 0;
-        for (uint256 i = 1; i < _batchIdCounter; i++) {
-            if (batches[i].verified) verifiedBatches[_idx++] = batches[i];
-        }
-        return verifiedBatches;
     }
 
     function getUserBatches(address user) public view returns (string memory userRole, CoffeeBatch[] memory history) {

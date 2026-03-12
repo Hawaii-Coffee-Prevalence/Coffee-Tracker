@@ -41,12 +41,12 @@ export const BatchSearch = ({
         onChange={e => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="flex-1 bg-transparent px-5 py-4 text-base-content placeholder-secondary/50 outline-none text-sm"
+        className="flex-1 bg-transparent px-3 py-2 text-base-content placeholder-secondary/50 outline-none text-sm"
       />
       <button
         type="button"
         onClick={handleSubmit}
-        className="btn btn-ghost rounded-none border-0 border-l border-base-300 px-7 text-sm tracking-wide h-auto"
+        className="btn btn-ghost rounded-none border-0 border-l border-base-300 text-sm tracking-wide h-auto px-4"
       >
         Search
       </button>
