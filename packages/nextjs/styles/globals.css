@@ -140,11 +140,11 @@
 }
 
 .text-label {
-  @apply text-xs font-medium tracking-[0.2em] uppercase;
+  @apply text-xs font-bold tracking-wide uppercase text-base-content;
 }
 
 .text-col-header {
-  @apply text-[0.65rem] font-medium tracking-[0.2em] uppercase;
+  @apply font-bold tracking-wide text-cream uppercase;
 }
 
 .text-muted {
@@ -160,7 +160,7 @@
 }
 
 .heading-hero {
-  @apply font-serif text-5xl lg:text-7xl font-light leading-[1.08] text-base-content;
+  @apply font-serif text-7xl font-light leading-[1.08] text-base-content;
 }
 
 .heading-section {

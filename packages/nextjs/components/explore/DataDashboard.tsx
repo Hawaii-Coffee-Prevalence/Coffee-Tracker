@@ -73,7 +73,7 @@ export const DataDashboard = () => {
               </>
             ) : (
               <>
-                <div className="text-hint uppercase tracking-[0.2em] mb-3">{label}</div>
+                <div className="text-hint uppercase tracking-widest mb-3">{label}</div>
                 <div className="font-serif text-3xl xl:text-5xl font-light text-base-content leading-none mb-1">
                   {value ?? "—"}
                 </div>

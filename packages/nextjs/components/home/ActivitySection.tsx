@@ -20,10 +20,10 @@ export const ActivitySection = () => {
   );
 
   return (
-    <section className="w-full bg-base-200 py-20 border-t border-b border-base-300 overflow-x-hidden">
+    <section className="w-full bg-base-200 py-20 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-16">
         <div className="mb-8">
-          <span className="text-label text-primary mb-3 block">Fresh Off the Chain</span>
+          <span className="text-label text-primary! mb-3 block">Fresh Off the Chain</span>
           <h2 className="heading-section">
             <span className="font-semibold">Recent Ledger Activity</span>
           </h2>

@@ -10,6 +10,9 @@ export const BatchSkeletonRows = () => (
           <Skeleton className="h-3 w-24" />
         </td>
         <td className="px-5 py-4">
+          <Skeleton className="h-3 w-8" />
+        </td>
+        <td className="px-5 py-4">
           <Skeleton className="h-3.5 w-24 mb-2" />
           <Skeleton className="h-2.5 w-16" />
         </td>

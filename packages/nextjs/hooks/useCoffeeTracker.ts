@@ -34,15 +34,51 @@ export const useCoffeeTracker = () => {
     fromBlock: 0n,
   });
 
+  const { data: processedEvents, isLoading: processedEventsLoading } = useScaffoldEventHistory({
+    contractName: "CoffeeTracker",
+    eventName: "Processed",
+    fromBlock: 0n,
+  });
+
+  const { data: roastedEvents, isLoading: roastedEventsLoading } = useScaffoldEventHistory({
+    contractName: "CoffeeTracker",
+    eventName: "Roasted",
+    fromBlock: 0n,
+  });
+
+  const { data: distributedEvents, isLoading: distributedEventsLoading } = useScaffoldEventHistory({
+    contractName: "CoffeeTracker",
+    eventName: "Distributed",
+    fromBlock: 0n,
+  });
+
+  const { data: verifiedEvents, isLoading: verifiedEventsLoading } = useScaffoldEventHistory({
+    contractName: "CoffeeTracker",
+    eventName: "Verified",
+    fromBlock: 0n,
+  });
+
   // Transaction Hash Mapping
   const txHashMap = useMemo((): Record<string, `0x${string}`> => {
-    if (!harvestedEvents) return {};
-    return Object.fromEntries(
-      harvestedEvents
-        .filter(e => e.args.batchId !== undefined && e.transactionHash)
-        .map(e => [e.args.batchId!.toString(), e.transactionHash as `0x${string}`]),
-    );
-  }, [harvestedEvents]);
+    const map: Record<string, `0x${string}`> = {};
+
+    const processEvents = (events: any[] | undefined) => {
+      if (!events) return;
+      events.forEach(e => {
+        if (e.args.batchId !== undefined && e.transactionHash) {
+          map[e.args.batchId.toString()] = e.transactionHash as `0x${string}`;
+        }
+      });
+    };
+
+    processEvents(harvestedEvents);
+    processEvents(processedEvents);
+    processEvents(roastedEvents);
+    processEvents(distributedEvents);
+    processEvents(verifiedEvents);
+
+    return map;
+  }, [harvestedEvents, processedEvents, roastedEvents, distributedEvents, verifiedEvents]);
 
   const stats = useMemo(() => {
     const batches = (rawBatches as CoffeeBatch[] | undefined) ?? [];
@@ -175,7 +211,15 @@ export const useCoffeeTracker = () => {
     transactionCount,
     farmCount,
     txHashMap,
-    isLoading: rawBatchesLoading || transactionCountLoading || farmCountLoading || harvestedEventsLoading,
+    isLoading:
+      rawBatchesLoading ||
+      transactionCountLoading ||
+      farmCountLoading ||
+      harvestedEventsLoading ||
+      processedEventsLoading ||
+      roastedEventsLoading ||
+      distributedEventsLoading ||
+      verifiedEventsLoading,
   };
 };
 
@@ -201,4 +245,14 @@ export const useUserBatches = (address: string | undefined) => {
     userBatches: data?.[1] as CoffeeBatch[] | undefined,
     isLoading,
   };
+};
+
+export const useUserRole = (address: string | undefined) => {
+  const { data, isLoading } = useScaffoldReadContract({
+    contractName: "CoffeeTracker",
+    functionName: "getRole",
+    args: [address ?? zeroAddress],
+  });
+
+  return { userRole: data as string | undefined, isLoading };
 };

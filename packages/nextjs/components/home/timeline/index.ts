@@ -18,7 +18,7 @@ export const CONTENT = [
   {
     step: 1,
     title: "Harvest",
-    color: "text-stage-harvest",
+    color: "text-stage-harvest!",
     borderColor: "border-stage-harvest",
     header: "Where Every\nJourney Begins",
     content:
@@ -27,7 +27,7 @@ export const CONTENT = [
   {
     step: 2,
     title: "Process",
-    color: "text-stage-process",
+    color: "text-stage-process!",
     borderColor: "border-stage-process",
     header: "Cherry to\nGreen Bean",
     content:
@@ -36,7 +36,7 @@ export const CONTENT = [
   {
     step: 3,
     title: "Roast",
-    color: "text-stage-roast",
+    color: "text-stage-roast!",
     borderColor: "border-stage-roast",
     header: "Unlocking\nthe Flavour",
     content:
@@ -45,7 +45,7 @@ export const CONTENT = [
   {
     step: 4,
     title: "Distribute",
-    color: "text-stage-distribute",
+    color: "text-stage-distribute!",
     borderColor: "border-stage-distribute",
     header: "From Island\nto Your Cup",
     content:

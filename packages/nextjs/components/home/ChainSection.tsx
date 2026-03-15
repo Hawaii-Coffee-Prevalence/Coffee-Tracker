@@ -51,7 +51,7 @@ export const ChainSection = () => {
   const activeItem = STEPS[activeIndex];
 
   return (
-    <section className="w-full bg-base-200 border-t border-base-300 relative">
+    <section className="w-full bg-base-200 relative">
       <div ref={containerRef} className="h-[400vh] relative w-full">
         {/* Sticky Top Fade */}
         <div className="sticky top-[4rem] h-[calc(100vh-4rem)] w-full flex flex-col items-center justify-start overflow-hidden py-20">
@@ -67,7 +67,7 @@ export const ChainSection = () => {
             {/* Header */}
             <div className="flex items-end justify-between py-2">
               <div>
-                <span className="text-label text-primary mb-3 block">How It Works</span>
+                <span className="text-label text-primary! mb-3 block">How It Works</span>
                 <h2 className="heading-section m-0">
                   <span className="flex items-center gap-4">
                     <span className="font-semibold">The Supply Chain</span>

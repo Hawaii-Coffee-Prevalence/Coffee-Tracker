@@ -2,7 +2,7 @@
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
-export type PaginationConfig = {
+export type AddressPaginationConfig = {
   currentPage: number;
   totalPages: number;
   totalItems: number;
@@ -16,7 +16,13 @@ const getPageWindow = (current: number, total: number): number[] => {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 };
 
-export const BatchPagination = ({ currentPage, totalPages, totalItems, pageSize, goToPage }: PaginationConfig) => {
+export const AddressPagination = ({
+  currentPage,
+  totalPages,
+  totalItems,
+  pageSize,
+  goToPage,
+}: AddressPaginationConfig) => {
   const showing = Math.min(pageSize, totalItems - (currentPage - 1) * pageSize);
 
   return (
@@ -25,7 +31,7 @@ export const BatchPagination = ({ currentPage, totalPages, totalItems, pageSize,
         <td colSpan={12} className="px-5 py-3 border-t border-base-300">
           <div className="flex items-center justify-between">
             <span className="text-muted">
-              Showing {showing} of {totalItems} batches
+              Showing {showing} of {totalItems} transactions
             </span>
 
             <div className="flex items-center gap-1">

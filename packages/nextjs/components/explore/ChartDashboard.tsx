@@ -97,7 +97,7 @@ const ScaCard = ({ stats, isLoading }: CardProps) => (
         ].map(({ label, value, cls }) => (
           <div key={label} className="px-2 py-2.5 flex flex-col items-center gap-0.5">
             <span className={`font-serif text-xl font-light leading-none ${cls}`}>{value}</span>
-            <span className="text-[0.58rem] font-medium tracking-[0.15em] uppercase text-muted">{label}</span>
+            <span className="text-xs font-medium tracking-wide uppercase text-muted">{label}</span>
           </div>
         ))}
       </div>

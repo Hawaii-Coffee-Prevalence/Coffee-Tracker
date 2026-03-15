@@ -97,6 +97,7 @@ export const Header = () => {
         </div>
 
         <SwitchTheme />
+
         <RainbowKitCustomConnectButton />
 
         <details className="dropdown dropdown-end lg:hidden" ref={burgerMenuRef}>

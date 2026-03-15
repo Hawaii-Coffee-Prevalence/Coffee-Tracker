@@ -27,12 +27,12 @@ export const BatchFilterBar = ({
     <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
       {/* Stage Filter Pills */}
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-label text-muted mr-1">Stage</span>
+        <span className="text-label text-muted text-sm mr-1">Stage</span>
         {STAGE_FILTERS.map(s => (
           <button
             key={s}
             onClick={() => onChange({ stage: s, region, sort })}
-            className={`btn btn-xs rounded-full border ${
+            className={`btn btn-sm rounded-full border ${
               stage === s ? "btn-primary" : "btn-ghost border-base-300 text-muted hover:border-primary"
             }`}
           >
@@ -46,7 +46,7 @@ export const BatchFilterBar = ({
         {onClear && (
           <button
             onClick={onClear}
-            className="btn btn-xs rounded-full border btn-ghost border-base-300 text-muted hover:border-error hover:text-error"
+            className="btn btn-sm rounded-full border btn-ghost border-base-300 text-muted hover:border-error hover:text-error"
           >
             Clear
           </button>

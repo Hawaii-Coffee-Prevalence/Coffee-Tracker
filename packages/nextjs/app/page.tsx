@@ -4,7 +4,6 @@ import { useState } from "react";
 import { QrModal } from "../components/QrModal";
 import { ActivitySection } from "../components/home/ActivitySection";
 import { ChainSection } from "../components/home/ChainSection";
-import { DashboardSection } from "../components/home/DashboardSection";
 import { HeroSection } from "../components/home/HeroSection";
 import { MapSection } from "../components/home/MapSection";
 import type { NextPage } from "next";
@@ -15,9 +14,8 @@ const Home: NextPage = () => {
   return (
     <div className="min-h-screen bg-base-200">
       <QrModal isOpen={qrOpen} onClose={() => setQrOpen(false)} />
-      <section className="grid lg:grid-cols-2 min-h-[calc(100vh-4rem)]">
+      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)]">
         <HeroSection onOpenQr={() => setQrOpen(true)} />
-        <DashboardSection />
       </section>
 
       <section className="grid min-h-[calc(100vh-4rem)]">
