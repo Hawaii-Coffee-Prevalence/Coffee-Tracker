@@ -5,10 +5,10 @@ import TransactionData from "./TransactionData";
 import TransactionJourney from "./TransactionJourney";
 import TransactionOverview from "./TransactionOverview";
 import TransactionTabs from "./TransactionTabs";
-import { Hash } from "viem";
-import { REGION_TO_ISLAND, STAGE_STYLES, getStage } from "~~/types/coffee";
+import { BatchTxHashes } from "~~/hooks/useCoffeeTracker";
+import { REGION_TO_ISLAND, STAGE_STYLES, getStage } from "~~/utils/coffee";
 
-const TransactionInfo = ({ batch, txHash }: { batch: any; txHash: Hash }) => {
+const TransactionInfo = ({ batch, txHashes }: { batch: any; txHashes: BatchTxHashes }) => {
   const stage = getStage(batch);
   const [activeTab, setActiveTab] = useState<"Overview" | "Journey" | "On Chain">("Overview");
 
@@ -58,7 +58,11 @@ const TransactionInfo = ({ batch, txHash }: { batch: any; txHash: Hash }) => {
         </div>
 
         <div className={`animate-fadeIn mt-4 ${activeTab === "On Chain" ? "block" : "hidden"}`}>
-          <TransactionData txHash={txHash} />
+          {txHashes?.harvested && <TransactionData txHash={txHashes.harvested} title="Harvested Transaction" />}
+          {txHashes?.processed && <TransactionData txHash={txHashes.processed} title="Processed Transaction" />}
+          {txHashes?.roasted && <TransactionData txHash={txHashes.roasted} title="Roasted Transaction" />}
+          {txHashes?.distributed && <TransactionData txHash={txHashes.distributed} title="Distributed Transaction" />}
+          {txHashes?.verified && <TransactionData txHash={txHashes.verified} title="Verified Transaction" />}
         </div>
       </div>
     </div>

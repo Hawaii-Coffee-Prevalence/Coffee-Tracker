@@ -1,7 +1,8 @@
 "use client";
 
 import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ScaBucket, getScaTier } from "~~/types/coffee";
+import { ScaBucket } from "~~/types/coffee";
+import { getScaTier } from "~~/utils/coffee";
 
 export const ScaChart = ({ data }: { data: ScaBucket[] }) => {
   const renderTooltip = ({ active, payload, label }: any) => {

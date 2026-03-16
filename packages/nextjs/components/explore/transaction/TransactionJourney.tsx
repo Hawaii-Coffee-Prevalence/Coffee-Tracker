@@ -3,7 +3,14 @@
 import { DataRow } from "./DataRow";
 import { zeroAddress } from "viem";
 import { BlockieAddressLink } from "~~/components/explore/BlockieAddressLink";
-import { PROCESSING_METHODS, REGIONS, ROASTING_METHODS, ROAST_LEVELS, VARIETIES } from "~~/types/coffee";
+import {
+  PROCESSING_METHODS,
+  REGIONS,
+  ROASTING_METHODS,
+  ROAST_LEVELS,
+  VARIETIES,
+  formatCoordinates,
+} from "~~/utils/coffee";
 
 const TransactionJourney = ({ batch }: { batch: any }) => {
   if (!batch) return <div className="text-base-content/50">No batch data available</div>;
@@ -28,14 +35,7 @@ const TransactionJourney = ({ batch }: { batch: any }) => {
             : "—"
         }
       />
-      <DataRow
-        title="Location"
-        value={
-          batch?.harvestLocation?.latitude
-            ? `${(Number(batch.harvestLocation.latitude) / 1e6).toFixed(6)}, ${(Number(batch.harvestLocation.longitude) / 1e6).toFixed(6)}`
-            : "—"
-        }
-      />
+      <DataRow title="Location" value={formatCoordinates(batch?.harvestLocation)} />
 
       {hasProcessed && (
         <>
@@ -64,14 +64,7 @@ const TransactionJourney = ({ batch }: { batch: any }) => {
                 : "—"
             }
           />
-          <DataRow
-            title="Location"
-            value={
-              batch?.processingLocation?.latitude
-                ? `${(Number(batch.processingLocation.latitude) / 1e6).toFixed(6)}, ${(Number(batch.processingLocation.longitude) / 1e6).toFixed(6)}`
-                : "—"
-            }
-          />
+          <DataRow title="Location" value={formatCoordinates(batch?.processingLocation)} />
         </>
       )}
 
@@ -100,14 +93,7 @@ const TransactionJourney = ({ batch }: { batch: any }) => {
                 : "—"
             }
           />
-          <DataRow
-            title="Location"
-            value={
-              batch?.roastingLocation?.latitude
-                ? `${(Number(batch.roastingLocation.latitude) / 1e6).toFixed(6)}, ${(Number(batch.roastingLocation.longitude) / 1e6).toFixed(6)}`
-                : "—"
-            }
-          />
+          <DataRow title="Location" value={formatCoordinates(batch?.roastingLocation)} />
         </>
       )}
 
@@ -125,14 +111,7 @@ const TransactionJourney = ({ batch }: { batch: any }) => {
                 : "—"
             }
           />
-          <DataRow
-            title="Location"
-            value={
-              batch?.distributionLocation?.latitude
-                ? `${(Number(batch.distributionLocation.latitude) / 1e6).toFixed(6)}, ${(Number(batch.distributionLocation.longitude) / 1e6).toFixed(6)}`
-                : "—"
-            }
-          />
+          <DataRow title="Location" value={formatCoordinates(batch?.distributionLocation)} />
           <DataRow title="Distributor" hasBorder={true}>
             {batch?.distributor && batch.distributor !== zeroAddress ? (
               <BlockieAddressLink address={batch.distributor} disableTruncation />

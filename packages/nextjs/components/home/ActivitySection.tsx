@@ -39,7 +39,11 @@ export const ActivitySection = () => {
           </div>
         </div>
 
-        <BatchTable batches={isLoading ? undefined : recentBatches} isLoading={isLoading} txHashMap={txHashMap} />
+        <BatchTable
+          batches={isLoading ? undefined : recentBatches}
+          isLoading={isLoading}
+          txHashMap={Object.fromEntries(Object.entries(txHashMap).map(([k, v]) => [k, v?.harvested || "0x0"]))}
+        />
       </div>
     </section>
   );

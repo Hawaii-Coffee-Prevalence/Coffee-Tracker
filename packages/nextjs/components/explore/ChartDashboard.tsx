@@ -3,7 +3,7 @@ import { RegionChart } from "./RegionChart";
 import { ScaChart } from "./ScaChart";
 import { Skeleton } from "~~/components/Skeleton";
 import { useCoffeeTracker } from "~~/hooks/useCoffeeTracker";
-import { PIPELINE_SEGMENTS } from "~~/types/coffee";
+import { PIPELINE_SEGMENTS } from "~~/utils/coffee";
 
 type Stats = NonNullable<ReturnType<typeof useCoffeeTracker>["stats"]>;
 type CardProps = { stats: Stats | null; isLoading: boolean };

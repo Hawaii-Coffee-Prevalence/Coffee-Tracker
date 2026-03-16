@@ -1,7 +1,8 @@
 "use client";
 
 import { BatchSearch } from "./BatchSearch";
-import { BatchFilterState, REGIONS, STAGES, SortOrder, StageFilter } from "~~/types/coffee";
+import { BatchFilterState, SortOrder, StageFilter } from "~~/types/coffee";
+import { REGIONS, STAGES } from "~~/utils/coffee";
 
 type BatchFilterBarProps = BatchFilterState & {
   onChange: (next: BatchFilterState) => void;

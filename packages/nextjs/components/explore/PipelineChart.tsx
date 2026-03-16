@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { PIPELINE_SEGMENTS, PipelineData } from "~~/types/coffee";
+import { PipelineData } from "~~/types/coffee";
+import { PIPELINE_SEGMENTS } from "~~/utils/coffee";
 
 export const PipelineChart = ({ data }: { data: PipelineData }) => {
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);

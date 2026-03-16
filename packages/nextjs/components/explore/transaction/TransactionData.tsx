@@ -17,7 +17,7 @@ export type DecodedTx = Transaction & {
   functionArgs?: any[];
 };
 
-const TransactionData = ({ txHash }: { txHash: Hash }) => {
+const TransactionData = ({ txHash, title }: { txHash: Hash; title?: string }) => {
   const client = usePublicClient();
   const { targetNetwork } = useTargetNetwork();
 
@@ -59,7 +59,7 @@ const TransactionData = ({ txHash }: { txHash: Hash }) => {
 
   return (
     <div className="flex flex-col w-full text-base-content pb-6">
-      <div className="text-label mb-3 mt-2">Blockchain Data</div>
+      <div className="text-label mb-3 mt-2">{title || "Blockchain Data"}</div>
 
       <DataRow title="TX Hash">
         <TxHashLink txHash={txDecoded.hash} disableTruncation={true} />
@@ -92,7 +92,7 @@ const TransactionData = ({ txHash }: { txHash: Hash }) => {
         <TransactionFunction tx={txDecoded} />
       </DataRow>
 
-      <DataRow title="Selector" value={txDecoded.input.substring(0, 10)} hasBorder={true} />
+      <DataRow title="Selector" value={txDecoded.input.substring(0, 10)} hasBorder={false} />
     </div>
   );
 };

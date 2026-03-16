@@ -9,7 +9,8 @@ import { ChartDashboard } from "~~/components/explore/ChartDashboard";
 import { DataDashboard } from "~~/components/explore/DataDashboard";
 import { useBatchPagination } from "~~/hooks/useBatchPagination";
 import { useCoffeeTracker } from "~~/hooks/useCoffeeTracker";
-import { BatchFilterState, CoffeeBatch, getStage } from "~~/types/coffee";
+import { BatchFilterState, CoffeeBatch } from "~~/types/coffee";
+import { getStage } from "~~/utils/coffee";
 
 const DEFAULT_FILTERS: BatchFilterState = { stage: "All", region: "all", sort: "newest" };
 
@@ -37,12 +38,17 @@ const BlockExplorer: NextPage = () => {
       const q = searchQuery.toLowerCase();
 
       list = list.filter(b => {
-        const txHash = txHashMap[b.batchId.toString()]?.toLowerCase() ?? "";
+        const hashes = txHashMap[b.batchId.toString()];
+
+        const isInHashes = hashes
+          ? Object.values(hashes).some(h => typeof h === "string" && h.toLowerCase().includes(q))
+          : false;
+
         return (
           b.batchId.toString().includes(q) ||
           b.batchNumber.toLowerCase().includes(q) ||
           b.farmName.toLowerCase().includes(q) ||
-          txHash.includes(q)
+          isInHashes
         );
       });
     }
@@ -71,7 +77,7 @@ const BlockExplorer: NextPage = () => {
       <BatchTable
         batches={isLoading ? undefined : paginatedItems}
         isLoading={isLoading}
-        txHashMap={txHashMap}
+        txHashMap={Object.fromEntries(Object.entries(txHashMap).map(([k, v]) => [k, v?.harvested || "0x0"]))}
         pagination={
           !isLoading ? { currentPage, totalPages, totalItems: batches.length, pageSize, goToPage } : undefined
         }

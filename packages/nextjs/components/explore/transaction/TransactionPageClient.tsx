@@ -18,7 +18,14 @@ const TransactionPageClient = ({ txHash }: TransactionPageClientProps) => {
   useEffect(() => {
     if (!stats?.allBatches || !txHashMap) return;
 
-    const found = stats.allBatches.find((b: any) => txHashMap[b.batchId?.toString?.()] === txHash);
+    const found = stats.allBatches.find((b: any) => {
+      const hashes = txHashMap[b.batchId?.toString?.()];
+
+      if (!hashes) return false;
+
+      return Object.values(hashes).includes(txHash);
+    });
+
     setBatch(found ?? null);
   }, [stats, txHashMap, txHash]);
 
@@ -55,7 +62,7 @@ const TransactionPageClient = ({ txHash }: TransactionPageClientProps) => {
             <Skeleton className="w-full h-full rounded-3xl" />
           </div>
         ) : (
-          <TransactionInfo batch={batch} txHash={txHash} />
+          <TransactionInfo batch={batch} txHashes={txHashMap[batch.batchId.toString()]} />
         )}
       </div>
     </div>

@@ -3,7 +3,8 @@
 import { memo } from "react";
 import { BlockieAddressLink } from "./BlockieAddressLink";
 import { TxHashLink } from "./TxHashLink";
-import { CoffeeBatch, REGIONS, STAGE_STYLES, getStage } from "~~/types/coffee";
+import { CoffeeBatch } from "~~/types/coffee";
+import { REGIONS, STAGE_STYLES, getStage } from "~~/utils/coffee";
 
 type BatchRowProps = {
   batch: CoffeeBatch;
