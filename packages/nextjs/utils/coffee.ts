@@ -1,10 +1,34 @@
 import { zeroAddress } from "viem";
-import { CoffeeBatch, Coordinates, STAGES, Stage } from "~~/types/coffee";
+import { CoffeeBatch, Coordinates, Stage } from "~~/types/coffee";
 
-export { STAGES };
-export type { Stage, CoffeeBatch, Coordinates };
+export const STAGES = ["Harvested", "Processed", "Roasted", "Distributed"] as const;
+
+export type { CoffeeBatch, Coordinates };
 
 export const COORD_SCALE = 1_000_000;
+
+export const formatTimestamp = (timestamp: bigint | number): string => {
+  const ts = typeof timestamp === "bigint" ? Number(timestamp) : timestamp;
+  const now = Math.floor(Date.now() / 1000);
+  const diff = now - ts;
+
+  if (diff <= 0) return "0s ago";
+  if (diff < 60) return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  return new Date(ts * 1000).toLocaleDateString();
+};
+
+export const formatDate = (timestamp: bigint | number | undefined): string => {
+  if (!timestamp) return "—";
+  const ts = typeof timestamp === "bigint" ? Number(timestamp) : timestamp;
+  return new Date(ts * 1000).toLocaleDateString();
+};
+
+export const formatWeight = (weight: bigint | number): string => {
+  const w = typeof weight === "bigint" ? Number(weight) : weight;
+  return w >= 1000 ? `${(w / 1000).toFixed(2)}k` : `${w}`;
+};
 
 export const formatCoordinates = (c?: Coordinates | null): string => {
   if (!c || c.latitude === undefined || c.longitude === undefined) return "—";

@@ -3,6 +3,7 @@
 import { DataRow } from "./DataRow";
 import { zeroAddress } from "viem";
 import { BlockieAddressLink } from "~~/components/explore/BlockieAddressLink";
+import { formatDate } from "~~/utils/coffee";
 
 const TransactionOverview = ({ batch }: { batch: any }) => {
   return (
@@ -41,11 +42,11 @@ const TransactionOverview = ({ batch }: { batch: any }) => {
           {[
             {
               label: "Harvested",
-              value: batch.harvestDate ? new Date(Number(batch.harvestDate) * 1000).toLocaleDateString() : "—",
+              value: formatDate(batch.harvestDate),
             },
             {
               label: "Minted",
-              value: batch.mintTimestamp ? new Date(Number(batch.mintTimestamp) * 1000).toLocaleDateString() : "—",
+              value: formatDate(batch.mintTimestamp),
             },
             { label: "Batch ID", value: `#${batch.batchId?.toString?.() ?? "?"}` },
           ].map((item: any) => (

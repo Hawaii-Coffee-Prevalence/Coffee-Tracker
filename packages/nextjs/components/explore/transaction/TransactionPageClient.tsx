@@ -38,7 +38,7 @@ const TransactionPageClient = ({ txHash }: TransactionPageClientProps) => {
           {isDataLoading ? (
             <Skeleton className="absolute inset-0 w-full h-full rounded-3xl" />
           ) : (
-            <Map3D className="absolute inset-0 w-full h-full" batches={[batch]} showJourney />
+            <Map3D className="absolute inset-0 w-full h-full" batches={[batch]} showJourney autoFitMarkers />
           )}
         </div>
 

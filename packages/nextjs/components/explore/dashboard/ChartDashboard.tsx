@@ -62,7 +62,7 @@ const PipelineCard = ({ stats, isLoading }: CardProps) => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="text-label text-muted">Supply Chain Pipeline</div>
-        <div className="text-muted text-xs">{isLoading ? "—" : (stats?.verifiedCount ?? "—")} verified</div>
+        <div className="text-muted text-xs">{isLoading ? "—" : (stats?.totalBatches ?? "—")} batches</div>
       </div>
 
       <div className="flex-1 flex flex-col justify-center gap-4">

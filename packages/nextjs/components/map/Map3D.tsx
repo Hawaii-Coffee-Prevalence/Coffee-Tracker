@@ -2,9 +2,10 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MapMarker } from "./MapMarker";
+import { LngLatBounds } from "maplibre-gl";
 import MapGL, { MapRef, NavigationControl as NavControl } from "react-map-gl/maplibre";
 import { Skeleton } from "~~/components/Skeleton";
-import { CoffeeBatch } from "~~/types/coffee";
+import { CoffeeBatch, Coordinates } from "~~/types/coffee";
 import { STAGES, STAGE_COLORS } from "~~/utils/coffee";
 
 const Map = MapGL as any;
@@ -17,12 +18,42 @@ const HAWAII_BOUNDS: [[number, number], [number, number]] = [
   [-153.0, 23.7], // + NE
 ];
 
+const INITIAL_VIEW_STATE = {
+  longitude: -157.5,
+  latitude: 20.5,
+  zoom: 5.5,
+  pitch: 0,
+  bearing: 0,
+};
+
 type Map3DProps = {
   className?: string;
   batches?: CoffeeBatch[];
   onBatchClick?: (batch: CoffeeBatch) => void;
   showJourney?: boolean;
   showLegend?: boolean;
+  autoFitMarkers?: boolean;
+};
+
+const isWithinBounds = (loc: Coordinates): boolean =>
+  loc.longitude >= HAWAII_BOUNDS[0][0] &&
+  loc.longitude <= HAWAII_BOUNDS[1][0] &&
+  loc.latitude >= HAWAII_BOUNDS[0][1] &&
+  loc.latitude <= HAWAII_BOUNDS[1][1];
+
+const getMarkerCoordinates = (batch: CoffeeBatch, showJourney: boolean): Coordinates[] => {
+  const isValid = (loc: Coordinates) => loc.latitude !== 0 && loc.longitude !== 0 && isWithinBounds(loc);
+
+  if (showJourney) {
+    return [batch.harvestLocation, batch.processingLocation, batch.roastingLocation, batch.distributionLocation].filter(
+      isValid,
+    );
+  }
+
+  if (isValid(batch.harvestLocation)) {
+    return [batch.harvestLocation];
+  }
+  return [];
 };
 
 const MapLegend = () => {
@@ -45,11 +76,20 @@ const MapLegend = () => {
   );
 };
 
-export const Map3D = ({ className, batches, onBatchClick, showJourney, showLegend = true }: Map3DProps) => {
+export const Map3D = ({
+  className,
+  batches,
+  onBatchClick,
+  showJourney,
+  showLegend = true,
+  autoFitMarkers = false,
+}: Map3DProps) => {
   const [activeBatchId, setActiveBatchId] = useState<string | null>(null);
   const mapRef = useRef<MapRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = React.useState(false);
+  const hasFittedMap = useRef(false);
+
   // Lazy load
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -65,6 +105,31 @@ export const Map3D = ({ className, batches, onBatchClick, showJourney, showLegen
     return () => observer.disconnect();
   }, []);
 
+  // Auto Fit Markers Logic
+  const fitMapToMarkers = useCallback(() => {
+    const map = mapRef.current?.getMap();
+
+    if (!map || !batches?.length || hasFittedMap.current) return;
+
+    const allCoords = batches.flatMap(b => getMarkerCoordinates(b, !!showJourney));
+
+    if (allCoords.length === 0) return;
+
+    const bounds = new LngLatBounds();
+
+    allCoords.forEach(c => bounds.extend([c.longitude, c.latitude]));
+
+    setTimeout(() => {
+      map.fitBounds(bounds.toArray() as [[number, number], [number, number]], {
+        padding: { top: 60, bottom: 60, left: 60, right: 60 },
+        maxZoom: 14,
+        duration: 1000,
+      });
+      hasFittedMap.current = true;
+    }, 300);
+  }, [batches, showJourney]);
+
+  // Load Map Tiles
   const onLoad = useCallback(() => {
     const map = mapRef.current?.getMap();
     if (!map) return;
@@ -76,7 +141,18 @@ export const Map3D = ({ className, batches, onBatchClick, showJourney, showLegen
     });
 
     map.setTerrain({ source: "terrain", exaggeration: 1.8 });
-  }, []);
+
+    if (autoFitMarkers) {
+      fitMapToMarkers();
+    }
+  }, [autoFitMarkers, fitMapToMarkers]);
+
+  // Check To Auto Fit Markers
+  useEffect(() => {
+    if (autoFitMarkers && batches?.length && mapRef.current?.getMap()) {
+      fitMapToMarkers();
+    }
+  }, [autoFitMarkers, batches, fitMapToMarkers]);
 
   const validBatches =
     batches?.filter(b => b.harvestLocation.latitude !== 0 && b.harvestLocation.longitude !== 0) ?? [];
@@ -89,13 +165,7 @@ export const Map3D = ({ className, batches, onBatchClick, showJourney, showLegen
           <Map
             ref={mapRef}
             mapStyle={`https://api.maptiler.com/maps/topo-v4/style.json?key=${MAPTILER_KEY}`}
-            initialViewState={{
-              longitude: -157.5,
-              latitude: 20.5,
-              zoom: 5.5,
-              pitch: 0,
-              bearing: 0,
-            }}
+            initialViewState={INITIAL_VIEW_STATE}
             maxBounds={HAWAII_BOUNDS}
             minZoom={5.0}
             maxZoom={20.0}

@@ -4,30 +4,18 @@ import { memo } from "react";
 import { BlockieAddressLink } from "../BlockieAddressLink";
 import { TxHashLink } from "../TxHashLink";
 import { CoffeeBatch } from "~~/types/coffee";
-import { REGIONS, STAGE_STYLES, getStage } from "~~/utils/coffee";
+import { REGIONS, STAGE_STYLES, formatTimestamp, getStage } from "~~/utils/coffee";
 
 type BatchRowProps = {
   batch: CoffeeBatch;
   txHash: `0x${string}` | undefined;
-  onRowClick?: (batch: CoffeeBatch) => void;
 };
 
-const formatTimestamp = (timestamp: bigint): string => {
-  const now = Math.floor(Date.now() / 1000);
-  const diff = now - Number(timestamp);
-
-  if (diff <= 0) return "0s ago";
-  if (diff < 60) return `${diff}s ago`;
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  return new Date(Number(timestamp) * 1000).toLocaleString();
-};
-
-export const BatchRow = memo(({ batch, txHash, onRowClick }: BatchRowProps) => {
+export const BatchRow = memo(({ batch, txHash }: BatchRowProps) => {
   const stage = getStage(batch);
   return (
-    <tr onClick={() => onRowClick?.(batch)} className={onRowClick ? "cursor-pointer hover:bg-base-200" : ""}>
-      <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
+    <tr>
+      <td className="px-4 py-2">
         <TxHashLink txHash={txHash} />
       </td>
 
@@ -58,7 +46,7 @@ export const BatchRow = memo(({ batch, txHash, onRowClick }: BatchRowProps) => {
         </span>
       </td>
 
-      <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
+      <td className="px-4 py-2">
         <BlockieAddressLink address={batch.farmer} />
       </td>
 

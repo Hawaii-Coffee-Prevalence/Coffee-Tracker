@@ -9,12 +9,11 @@ import { CoffeeBatch } from "~~/types/coffee";
 type BatchTableProps = {
   batches: CoffeeBatch[] | undefined;
   isLoading?: boolean;
-  onRowClick?: (batch: CoffeeBatch) => void;
   txHashMap: Record<string, `0x${string}`>;
   pagination?: PaginationConfig;
 };
 
-export const BatchTable = ({ batches, isLoading = false, onRowClick, txHashMap, pagination }: BatchTableProps) => {
+export const BatchTable = ({ batches, isLoading = false, txHashMap, pagination }: BatchTableProps) => {
   const rows = useMemo(() => batches ?? [], [batches]);
 
   return (
@@ -42,12 +41,7 @@ export const BatchTable = ({ batches, isLoading = false, onRowClick, txHashMap, 
               </tr>
             ) : (
               rows.map(batch => (
-                <BatchRow
-                  key={batch.batchId.toString()}
-                  batch={batch}
-                  txHash={txHashMap[batch.batchId.toString()]}
-                  onRowClick={onRowClick}
-                />
+                <BatchRow key={batch.batchId.toString()} batch={batch} txHash={txHashMap[batch.batchId.toString()]} />
               ))
             )}
           </tbody>

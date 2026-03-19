@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { zeroAddress } from "viem";
 import { usePublicClient } from "wagmi";
 import { useDeployedContractInfo, useScaffoldEventHistory, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { CoffeeBatch, PipelineData } from "~~/types/coffee";
+import { BatchTxHashes, CoffeeBatch, CoffeeTrackerStats, PipelineData } from "~~/types/coffee";
 import {
   PROCESSING_METHODS,
   REGIONS,
@@ -10,18 +10,11 @@ import {
   ROASTING_METHODS,
   STAGES,
   VARIETIES,
+  formatWeight,
   getScaTier,
   getStage,
+  mapNestedToBatch,
 } from "~~/utils/coffee";
-import { mapNestedToBatch } from "~~/utils/coffee";
-
-export type BatchTxHashes = {
-  harvested?: `0x${string}`;
-  processed?: `0x${string}`;
-  roasted?: `0x${string}`;
-  distributed?: `0x${string}`;
-  verified?: `0x${string}`;
-};
 
 export const useCoffeeTracker = () => {
   const { data: deployedContract } = useDeployedContractInfo({ contractName: "CoffeeTracker" });
@@ -139,7 +132,7 @@ export const useCoffeeTracker = () => {
     return map;
   }, [harvestedEvents, processedEvents, roastedEvents, distributedEvents, verifiedEvents]);
 
-  const stats = useMemo(() => {
+  const stats = useMemo((): CoffeeTrackerStats | null => {
     const rawData = (rawBatches as any[] | undefined) ?? [];
     const batches: CoffeeBatch[] = rawData.map(mapNestedToBatch);
 
@@ -168,7 +161,7 @@ export const useCoffeeTracker = () => {
     const lowestSca = scoredBatches.length > 0 ? Math.min(...scoredBatches.map(b => b.scaScore)) : 0;
 
     const totalWeightKg = batches.reduce((sum, b) => sum + Number(b.harvestWeight), 0);
-    const totalWeightDisplay = totalWeightKg >= 1000 ? `${(totalWeightKg / 1000).toFixed(2)}k` : `${totalWeightKg}`;
+    const totalWeightDisplay = formatWeight(totalWeightKg);
 
     const islands = new Set(batches.map(b => REGION_TO_ISLAND[b.region]));
     const islandCount = islands.size;
@@ -302,13 +295,19 @@ export const useUserBatches = (address: string | undefined) => {
     args: [address ?? zeroAddress],
   });
 
-  const userBatches = useMemo(() => {
-    if (!data?.[1]) return undefined;
-    return (data[1] as any[]).map(mapNestedToBatch);
+  const [userRole, userBatches] = useMemo(() => {
+    if (!data) return [undefined, undefined];
+
+    const role = (data as any).userRole || (data as any)[0];
+    const history = (data as any).history || (data as any)[1];
+
+    if (!history) return [role, undefined];
+
+    return [role, (history as any[]).map(mapNestedToBatch)];
   }, [data]);
 
   return {
-    userRole: data?.[0] as string | undefined,
+    userRole,
     userBatches,
     isLoading,
   };

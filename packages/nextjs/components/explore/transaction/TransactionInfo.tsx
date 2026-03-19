@@ -1,16 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TransactionData from "./TransactionData";
 import TransactionJourney from "./TransactionJourney";
 import TransactionOverview from "./TransactionOverview";
 import TransactionTabs from "./TransactionTabs";
-import { BatchTxHashes } from "~~/hooks/useCoffeeTracker";
+import { BatchTxHashes } from "~~/types/coffee";
 import { REGION_TO_ISLAND, STAGE_STYLES, getStage } from "~~/utils/coffee";
 
 const TransactionInfo = ({ batch, txHashes }: { batch: any; txHashes: BatchTxHashes }) => {
   const stage = getStage(batch);
   const [activeTab, setActiveTab] = useState<"Overview" | "Journey" | "On Chain">("Overview");
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [activeTab]);
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
@@ -48,7 +55,11 @@ const TransactionInfo = ({ batch, txHashes }: { batch: any; txHashes: BatchTxHas
         <TransactionTabs tabs={["Overview", "Journey", "On Chain"]} activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
-      <div className="flex-1 w-full relative overflow-y-auto px-10 pb-10" style={{ scrollbarWidth: "none" }}>
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 w-full relative overflow-y-auto px-10 pb-10"
+        style={{ scrollbarWidth: "none" }}
+      >
         <div className={`flex flex-col gap-8 animate-fadeIn mt-4 ${activeTab === "Overview" ? "block" : "hidden"}`}>
           <TransactionOverview batch={batch} />
         </div>

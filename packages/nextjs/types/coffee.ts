@@ -58,12 +58,51 @@ export type PipelineData = {
   distributed: number;
 };
 
-export type RegionData = { name: string; count: number }[];
+export type RegionCounter = {
+  name: string;
+  count: number;
+};
 
-export type ScaBucket = { score: string; count: number };
+export type RegionData = RegionCounter[];
 
-export const STAGES = ["Harvested", "Processed", "Roasted", "Distributed"] as const;
-export type Stage = (typeof STAGES)[number];
+export type ScaBucket = {
+  score: string;
+  count: number;
+};
+
+export type CoffeeTrackerStats = {
+  totalBatches: number;
+  batchesThisWeek: number;
+  batchesToday: number;
+  verifiedCount: number;
+  verifiedPercent: number;
+  averageScaScore: string | number;
+  scaLabel: string;
+  highestSca: number;
+  lowestSca: number;
+  totalWeightDisplay: string;
+  islandCount: number;
+
+  pipeline: PipelineData;
+  regionCounters: RegionCounter[];
+  scaBuckets: ScaBucket[];
+
+  recentBatches: CoffeeBatch[];
+  allBatches: CoffeeBatch[];
+
+  averageElevation: number;
+  averageYield: number;
+  varietyCount: number;
+  averageMoisture: number;
+  processMethodCount: number;
+  roastMethodCount: number;
+  averageRoastWeightLoss: number;
+  averageTransportTime: number;
+};
+
+export type Stage = "Harvested" | "Processed" | "Roasted" | "Distributed";
+
+export type UserRole = "None" | "Farmer" | "Processor" | "Roaster" | "Distributor" | "Verifier" | "User";
 
 export type StageFilter = "All" | Stage | "Verified";
 export type SortOrder = "newest" | "oldest";
@@ -71,4 +110,12 @@ export type BatchFilterState = {
   stage: StageFilter;
   region: string;
   sort: SortOrder;
+};
+
+export type BatchTxHashes = {
+  harvested?: `0x${string}`;
+  processed?: `0x${string}`;
+  roasted?: `0x${string}`;
+  distributed?: `0x${string}`;
+  verified?: `0x${string}`;
 };
