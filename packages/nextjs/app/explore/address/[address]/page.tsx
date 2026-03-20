@@ -1,8 +1,8 @@
+import { ExploreAddressComponent } from "../../../../components/explore/address/ExploreAddressComponent";
 import fs from "fs";
 import path from "path";
 import { Address } from "viem";
 import { hardhat } from "viem/chains";
-import { AddressComponent } from "~~/app/blockexplorer/_components/AddressComponent";
 import deployedContracts from "~~/contracts/deployedContracts";
 import { isZeroAddress } from "~~/utils/scaffold-eth/common";
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
@@ -95,7 +95,7 @@ const AddressPage = async (props: PageProps) => {
   if (isZeroAddress(address)) return null;
 
   const contractData: { bytecode: string; assembly: string } | null = await getContractData(address);
-  return <AddressComponent address={address} contractData={contractData} />;
+  return <ExploreAddressComponent address={address} contractData={contractData} />;
 };
 
 export default AddressPage;

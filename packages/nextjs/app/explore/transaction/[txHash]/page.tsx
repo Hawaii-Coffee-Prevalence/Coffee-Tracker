@@ -1,6 +1,6 @@
-import TransactionComp from "../_components/TransactionComp";
 import type { NextPage } from "next";
 import { Hash } from "viem";
+import TransactionPageClient from "~~/components/explore/transaction/TransactionPageClient";
 import { isZeroAddress } from "~~/utils/scaffold-eth/common";
 
 type PageProps = {
@@ -17,7 +17,7 @@ const TransactionPage: NextPage<PageProps> = async (props: PageProps) => {
 
   if (isZeroAddress(txHash)) return null;
 
-  return <TransactionComp txHash={txHash} />;
+  return <TransactionPageClient txHash={txHash} />;
 };
 
 export default TransactionPage;
