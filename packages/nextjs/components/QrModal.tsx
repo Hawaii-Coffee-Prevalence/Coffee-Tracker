@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Html5Qrcode } from "html5-qrcode";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 type Props = {
   isOpen: boolean;
@@ -10,9 +10,7 @@ type Props = {
 };
 
 const QrModal = ({ isOpen, onClose }: Props) => {
-  const router = useRouter();
   const scannerRef = useRef<Html5Qrcode | null>(null);
-  const [scanning, setScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<string | null>(null);
 
@@ -21,7 +19,6 @@ const QrModal = ({ isOpen, onClose }: Props) => {
 
     const scanner = new Html5Qrcode("qr-reader");
     scannerRef.current = scanner;
-    setScanning(true);
     setError(null);
     setResult(null);
 
@@ -30,67 +27,66 @@ const QrModal = ({ isOpen, onClose }: Props) => {
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
         decodedText => {
-          setResult(decodedText);
-          scanner.stop();
-          setScanning(false);
+          const isValid = decodedText.includes("/explore/batch/");
 
-          if (decodedText.includes("/explore/batch/")) {
-            setTimeout(() => {
-              onClose();
-              router.push(new URL(decodedText).pathname);
-            }, 1000);
+          if (!isValid) {
+            setError("Unable to parse QR code! Please scan a valid KopeChain batch.");
+            scanner.stop().catch(() => {});
+            return;
           }
+
+          setResult(decodedText);
+          scanner.stop().catch(() => {});
+
+          setTimeout(() => {
+            onClose();
+            window.location.href = new URL(decodedText).pathname;
+          }, 1000);
         },
         undefined,
       )
       .catch(() => {
-        setError("Camera Access Denied. Please Allow Camera Permissions.");
-        setScanning(false);
+        setError("Unable to access camera! Please allow camera permissions.");
       });
 
     return () => {
-      scanner.stop().catch(() => {});
+      scannerRef.current?.stop().catch(() => {});
     };
-  }, [isOpen, onClose, router]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
     <dialog className="modal modal-open" onClick={onClose}>
-      <div className="modal-box flex flex-col items-center gap-6 py-10" onClick={e => e.stopPropagation()}>
-        <div className="flex flex-col items-center gap-1">
-          <h3 className="text-label">Batch Scanner</h3>
-          <p className="text-hint">Point your camera at a KopeChain QR Code</p>
+      <div className="modal-box flex flex-col items-center py-10" onClick={e => e.stopPropagation()}>
+        <div className="relative flex flex-col items-center text-center w-full mb-6">
+          <span className="font-label font-semibold !text-lg mb-1">Batch Scanner</span>
+          <span className="text-hint !text-base">Point your camera at a KopeChain QR Code</span>
+
+          <button
+            onClick={onClose}
+            className="absolute top-0 right-0 text-base-content/50 hover:text-base-content transition-colors cursor-pointer"
+            aria-label="Close"
+          >
+            <XMarkIcon className="w-7.5 h-7.5" />
+          </button>
         </div>
 
         <div className="w-full rounded-2xl overflow-hidden bg-base-200">
           <div id="qr-reader" className="w-full" />
         </div>
 
-        {scanning && (
-          <div className="flex items-center gap-2">
-            <span className="loading loading-spinner loading-xs" />
-          </div>
-        )}
-
         {error && (
-          <div className="alert alert-error py-2">
+          <div className="text-error text-base text-center">
             <span>{error}</span>
           </div>
         )}
 
         {result && (
-          <div className="alert alert-success text-sm py-2 flex flex-col items-start gap-1">
-            <span className="font-semibold">Batch found!</span>
-            <span className="text-xs break-all opacity-70">{result}</span>
+          <div className="text-primary text-base text-center">
+            <span className="font-semibold">Batch found! Redirecting...</span>
           </div>
         )}
-
-        <div className="modal-action mt-0">
-          <button className="btn btn-ghost" onClick={onClose}>
-            Close
-          </button>
-        </div>
       </div>
     </dialog>
   );

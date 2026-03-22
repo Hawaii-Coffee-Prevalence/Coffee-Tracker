@@ -29,7 +29,7 @@ const MapPopup = ({ batch, location, stage, onClose }: MapPopupProps) => {
       onClose={onClose}
       className="bare-popup z-50"
     >
-      <div className="bg-base-100 border border-base-300 rounded-xl shadow-center overflow-hidden min-w-[200px]">
+      <div className="modal-surface min-w-[200px]">
         <div className="px-3 py-2 flex flex-col">
           <div className="flex flex-col">
             <div className="flex items-center justify-between gap-2">

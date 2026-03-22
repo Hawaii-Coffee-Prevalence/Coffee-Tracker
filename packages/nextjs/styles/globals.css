@@ -229,3 +229,8 @@
 .bare-popup .maplibregl-popup-tip {
   display: none !important;
 }
+
+.modal-surface {
+  @apply bg-base-100 border border-base-300 rounded-xl overflow-hidden;
+  box-shadow: var(--shadow-center);
+}
