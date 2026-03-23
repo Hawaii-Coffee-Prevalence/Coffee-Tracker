@@ -1,63 +1,7 @@
-export type BatchMetadata = {
-  name: string;
-  description: string;
-  image: string;
-  external_url: string;
-  attributes: Array<{
-    trait_type: string;
-    value: string | number;
-    display_type?: string;
-  }>;
-  properties: {
-    batchNumber: string;
-    harvest?: {
-      farmName: string;
-      region: string;
-      variety: string;
-      elevation: number;
-      harvestDate: number;
-      harvestWeight: number;
-      location: { latitude: number; longitude: number };
-    };
-    processing?: {
-      processingMethod: string;
-      moistureContent: number;
-      scaScore: number;
-      humidity: number;
-      dryTemperature: number;
-      processingDate: number;
-      beforeWeight: number;
-      afterWeight: number;
-      location: { latitude: number; longitude: number };
-    };
-    roasting?: {
-      roastingMethod: string;
-      roastLevel: string;
-      cuppingNotes: string;
-      roastingDate: number;
-      transportTime: number;
-      beforeWeight: number;
-      afterWeight: number;
-      location: { latitude: number; longitude: number };
-    };
-    distribution?: {
-      distributionDate: number;
-      bagCount: number;
-      distributionWeight: number;
-      destination: string;
-      location: { latitude: number; longitude: number };
-    };
-    images: {
-      nft?: string;
-      qrCode?: string;
-    };
-  };
-};
+import { generateQRBlob } from "./qrcode";
+import { BatchMetadata } from "~~/types/batchmetadata";
 
 export const PINATA_GATEWAY = process.env.NEXT_PUBLIC_PINATA_GATEWAY ?? "https://gateway.pinata.cloud";
-
-export const ipfsToHTTP = (uri: string) =>
-  uri.startsWith("ipfs://") ? `${PINATA_GATEWAY}/ipfs/${uri.replace("ipfs://", "")}` : uri;
 
 export async function fetchMetadata(cid: string): Promise<BatchMetadata> {
   const url = `${PINATA_GATEWAY}/ipfs/${cid}`;
@@ -65,3 +9,75 @@ export async function fetchMetadata(cid: string): Promise<BatchMetadata> {
   if (!res.ok) throw new Error(`IPFS fetch failed for CID ${cid}`);
   return res.json();
 }
+
+export async function pinJSON(
+  content: BatchMetadata,
+  name: string,
+  batchNumber: string,
+  groupId?: string,
+): Promise<string> {
+  const res = await fetch("/api/pin/json", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ content, name, batchNumber, groupId }),
+  });
+
+  if (!res.ok) throw new Error(`Pinata pinJSON failed: ${await res.text()}`);
+  return (await res.json()).IpfsHash;
+}
+
+export async function getOrCreateGroup(name: string): Promise<string> {
+  const res = await fetch(`/api/pin/group?name=${encodeURIComponent(name)}`);
+  if (!res.ok) throw new Error(`Failed to get/create group: ${await res.text()}`);
+
+  const data = await res.json();
+  return data.id;
+}
+
+export async function pinQR(batchNumber: string, groupId: string): Promise<string> {
+  const blob = await generateQRBlob(batchNumber, process.env.NEXT_PUBLIC_APP_URL);
+
+  const formData = new FormData();
+  formData.append("file", blob, `qr-${batchNumber}.png`);
+  formData.append("pinataMetadata", JSON.stringify({ name: `qr-${batchNumber}.png` }));
+  formData.append("pinataOptions", JSON.stringify({ groupId }));
+
+  const res = await fetch("/api/pin/qr", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error(`QR upload failed: ${await res.text()}`);
+  }
+
+  return (await res.json()).IpfsHash;
+}
+
+export async function pinFile(file: File, name: string, groupId: string): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file, name);
+  formData.append("pinataMetadata", JSON.stringify({ name }));
+  formData.append("pinataOptions", JSON.stringify({ groupId }));
+
+  const res = await fetch("/api/pin", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) throw new Error(`File upload failed: ${await res.text()}`);
+  return (await res.json()).IpfsHash;
+}
+
+export const ipfsToHTTP = (uri: string) => {
+  if (!uri) return "";
+
+  if (uri.startsWith("ipfs://")) {
+    return `${PINATA_GATEWAY}/ipfs/${uri.replace("ipfs://", "")}`;
+  }
+
+  if (uri.startsWith("Qm") || uri.startsWith("ba")) {
+    return `${PINATA_GATEWAY}/ipfs/${uri}`;
+  }
+  return uri;
+};

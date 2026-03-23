@@ -65,8 +65,9 @@ export type CoffeeBatch = {
   distributionLocation: Coordinates;
 
   images: {
-    nft?: string;
-    qrCode?: string;
+    nft?: { cid: string; description: string };
+    qrCode?: { cid: string; description: string };
+    gallery?: Array<{ cid: string; description: string }>;
   };
 };
 

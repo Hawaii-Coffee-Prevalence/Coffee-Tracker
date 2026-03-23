@@ -141,8 +141,7 @@ export async function getOrCreateGroup(name: string): Promise<string> {
   });
 
   const listData = await listRes.json();
-  if (listData.groups?.length > 0) {
-    console.log(`Reusing group ${listData.groups[0].id}`);
+  if (listData.groups && listData.groups.length > 0) {
     return listData.groups[0].id;
   }
 

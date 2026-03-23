@@ -3,6 +3,7 @@ import { useDeployedContractInfo, useScaffoldEventHistory, useScaffoldReadContra
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Abi, zeroAddress } from "viem";
 import { usePublicClient, useReadContracts } from "wagmi";
+import { BatchMetadata } from "~~/types/batchmetadata";
 import { BatchTxHashes, CoffeeBatch, CoffeeTrackerStats, PipelineData, RawBatch } from "~~/types/coffee";
 import {
   PROCESSING_METHODS,
@@ -16,7 +17,7 @@ import {
   getStage,
   mapBatch,
 } from "~~/utils/coffee";
-import { BatchMetadata, fetchMetadata } from "~~/utils/pinata";
+import { fetchMetadata } from "~~/utils/pinata";
 
 async function fetchAllBatches(
   publicClient: ReturnType<typeof usePublicClient>,

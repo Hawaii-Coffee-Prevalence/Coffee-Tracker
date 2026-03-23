@@ -38,28 +38,27 @@ const BatchAlbum = ({ batch }: { batch: any }) => {
   }
 
   return (
-    <div className="flex flex-col h-full items-center gap-3">
+    <div className="flex flex-col h-full items-center gap-3 pb-4">
       <span className="text-hint text-xs text-center">{items[currentIndex]?.label || "Image Metadata"}</span>
 
       <div className="carousel w-full flex-1 rounded-2xl overflow-hidden bg-base-200">
         {items.map((item, i) => (
           <div key={i} id={`media-${i}`} className="carousel-item w-full justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={item.url} alt={item.label} className="w-full h-full object-cover" />
+            <img src={item.url} alt={item.label} className="w-full h-full object-contain" />
           </div>
         ))}
       </div>
 
       <div className="flex justify-center gap-2 shrink-0 flex-wrap">
         {items.map((_, i) => (
-          <a
+          <button
             key={i}
-            href={`#media-${i}`}
             onClick={() => setCurrentIndex(i)}
             className={`btn btn-xs ${currentIndex === i ? "btn-primary" : "btn-ghost border border-base-300"}`}
           >
             {i + 1}
-          </a>
+          </button>
         ))}
       </div>
     </div>

@@ -1,5 +1,5 @@
-import { BatchMetadata } from "./pinata";
 import { zeroAddress } from "viem";
+import { BatchMetadata } from "~~/types/batchmetadata";
 import { CoffeeBatch, Coordinates, RawBatch, Stage } from "~~/types/coffee";
 
 export const STAGES = ["Harvested", "Processed", "Roasted", "Distributed"] as const;
@@ -35,6 +35,8 @@ export const formatCoordinates = (c?: Coordinates | null): string => {
   if (!c || c.latitude === undefined || c.longitude === undefined) return "—";
   return `${Number(c.latitude).toFixed(6)}, ${Number(c.longitude).toFixed(6)}`;
 };
+
+export const toUnixSeconds = (value: string) => Math.floor(new Date(`${value}T00:00:00`).getTime() / 1000);
 
 export const REGIONS: Record<number, string> = {
   0: "Kona",
