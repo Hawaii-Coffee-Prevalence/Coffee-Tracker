@@ -5,21 +5,7 @@ import { useDebounceValue } from "usehooks-ts";
 import { zeroAddress } from "viem";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-
-type BatchData = {
-  farmer: string;
-  processor: string;
-  roaster: string;
-  distributor: string;
-  batchId: bigint;
-};
-
-type BatchSelectProps = {
-  value: string;
-  onSelect: (batchNumber: string) => void;
-  requiredStage: "Harvested" | "Processed" | "Roasted";
-  isDisabled?: boolean;
-};
+import { BatchData, BatchSelectProps } from "~~/types/forms";
 
 const STAGE_CONFIG = {
   Harvested: {
@@ -80,7 +66,7 @@ export const BatchSelect = ({ value, onSelect, requiredStage, isDisabled }: Batc
     <div className="relative flex items-center">
       <input
         type="text"
-        className={`input input-bordered w-full text-sm h-11 pr-10 transition-colors ${
+        className={`input input-bordered w-full text-sm h-10 pr-10 transition-colors ${
           status === "valid" ? "input-success" : status === "invalid" ? "input-error" : ""
         }`}
         placeholder={`Enter ${requiredStage} batch ID...`}

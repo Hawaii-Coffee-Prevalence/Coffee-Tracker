@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { Popup as PopupGL } from "react-map-gl/maplibre";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { CoffeeBatch, Coordinates, Stage } from "~~/types/coffee";
+import { CoffeeBatch } from "~~/types/batch";
+import { Coordinates } from "~~/types/batch";
+import { Stage } from "~~/types/coffee";
 import { REGIONS, STAGE_STYLES, VARIETIES } from "~~/utils/coffee";
 
 const Popup = PopupGL as any;

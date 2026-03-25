@@ -1,10 +1,10 @@
 import { zeroAddress } from "viem";
-import { BatchMetadata } from "~~/types/batchmetadata";
-import { CoffeeBatch, Coordinates, RawBatch, Stage } from "~~/types/coffee";
-
-export const STAGES = ["Harvested", "Processed", "Roasted", "Distributed"] as const;
+import { BatchMetadata, CoffeeBatch, Coordinates, RawBatch } from "~~/types/batch";
+import { Stage } from "~~/types/coffee";
 
 export type { CoffeeBatch, Coordinates };
+
+export const STAGES = ["Harvested", "Processed", "Roasted", "Distributed"] as const;
 
 export const COORD_SCALE = 1_000_000;
 
@@ -62,6 +62,18 @@ export const REGION_COLORS: Record<string, string> = {
   Other: "#A3A3A3", // Neutral Cool Gray
 };
 
+export const REGION_TO_ISLAND: Record<number, string> = {
+  0: "Hawai'i Island",
+  1: "Hawai'i Island",
+  2: "Hawai'i Island",
+  3: "Hawai'i Island",
+  4: "Maui",
+  5: "Kauai",
+  6: "Molokai",
+  7: "Oahu",
+  8: "Unknown",
+};
+
 export const getRegionColor = (name: string) => REGION_COLORS[name] ?? REGION_COLORS["Other"];
 
 export const VARIETIES: Record<number, string> = {
@@ -114,6 +126,13 @@ export const STAGE_STYLES: Record<Stage, string> = {
   Distributed: "bg-stage-distribute text-cream",
 };
 
+export const getStage = (batch: CoffeeBatch): Stage => {
+  if (batch.distributor !== zeroAddress) return "Distributed";
+  if (batch.roaster !== zeroAddress) return "Roasted";
+  if (batch.processor !== zeroAddress) return "Processed";
+  return "Harvested";
+};
+
 export const PIPELINE_SEGMENTS = STAGES.map(stage => ({
   key: stage.toLowerCase() as Lowercase<Stage>,
   label: stage,
@@ -128,25 +147,6 @@ export const SCA_TIERS = [
 ] as const;
 
 export const getScaTier = (score: number) => SCA_TIERS.find(t => score >= t.min) ?? SCA_TIERS[SCA_TIERS.length - 1];
-
-export const REGION_TO_ISLAND: Record<number, string> = {
-  0: "Hawai'i Island",
-  1: "Hawai'i Island",
-  2: "Hawai'i Island",
-  3: "Hawai'i Island",
-  4: "Maui",
-  5: "Kauai",
-  6: "Molokai",
-  7: "Oahu",
-  8: "Unknown",
-};
-
-export const getStage = (batch: CoffeeBatch): Stage => {
-  if (batch.distributor !== zeroAddress) return "Distributed";
-  if (batch.roaster !== zeroAddress) return "Roasted";
-  if (batch.processor !== zeroAddress) return "Processed";
-  return "Harvested";
-};
 
 export function mapBatch(raw: RawBatch, metadata?: BatchMetadata | null): CoffeeBatch {
   const h = metadata?.properties?.harvest;

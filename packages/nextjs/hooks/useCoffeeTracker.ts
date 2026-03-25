@@ -3,8 +3,8 @@ import { useDeployedContractInfo, useScaffoldEventHistory, useScaffoldReadContra
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Abi, zeroAddress } from "viem";
 import { usePublicClient, useReadContracts } from "wagmi";
-import { BatchMetadata } from "~~/types/batchmetadata";
-import { BatchTxHashes, CoffeeBatch, CoffeeTrackerStats, PipelineData, RawBatch } from "~~/types/coffee";
+import { BatchMetadata, BatchTxHashes, CoffeeBatch, RawBatch } from "~~/types/batch";
+import { CoffeeTrackerStats, PipelineData } from "~~/types/coffee";
 import {
   PROCESSING_METHODS,
   REGIONS,

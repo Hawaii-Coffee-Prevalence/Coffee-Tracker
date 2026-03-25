@@ -1,75 +1,6 @@
-export type Coordinates = {
-  latitude: number;
-  longitude: number;
-};
+import { CoffeeBatch } from "~~/types/batch";
 
-export type RawBatch = {
-  batchId: bigint;
-  mintTimestamp: number;
-  verified: boolean;
-  region: number;
-  variety: number;
-  processingMethod: number;
-  roastingMethod: number;
-  roastLevel: number;
-  farmer: `0x${string}`;
-  processor: `0x${string}`;
-  roaster: `0x${string}`;
-  distributor: `0x${string}`;
-  batchNumber: string;
-  metadataCID: string;
-};
-
-export type CoffeeBatch = {
-  batchId: bigint;
-  mintTimestamp: bigint;
-  verified: boolean;
-  region: number;
-  variety: number;
-  processingMethod: number;
-  roastingMethod: number;
-  roastLevel: number;
-  farmer: string;
-  processor: string;
-  roaster: string;
-  distributor: string;
-  batchNumber: string;
-  metadataCID: string;
-
-  farmName: string;
-  elevation: number;
-  harvestDate: bigint;
-  harvestWeight: bigint;
-  harvestLocation: Coordinates;
-
-  moistureContent: number;
-  scaScore: number;
-  humidity: number;
-  dryTemperature: number;
-  processingDate: bigint;
-  processingBeforeWeight: bigint;
-  processingAfterWeight: bigint;
-  processingLocation: Coordinates;
-
-  transportTime: number;
-  roastingDate: bigint;
-  roastingBeforeWeight: bigint;
-  roastingAfterWeight: bigint;
-  cuppingNotes: string;
-  roastingLocation: Coordinates;
-
-  distributionDate: bigint;
-  bagCount: number;
-  distributionWeight: bigint;
-  destination: string;
-  distributionLocation: Coordinates;
-
-  images: {
-    nft?: { cid: string; description: string };
-    qrCode?: { cid: string; description: string };
-    gallery?: Array<{ cid: string; description: string }>;
-  };
-};
+export type { CoffeeBatch };
 
 export type PipelineData = {
   harvested: number;
@@ -125,17 +56,11 @@ export type Stage = "Harvested" | "Processed" | "Roasted" | "Distributed";
 export type UserRole = "None" | "Farmer" | "Processor" | "Roaster" | "Distributor" | "Verifier" | "User";
 
 export type StageFilter = "All" | Stage | "Verified";
+
 export type SortOrder = "newest" | "oldest";
+
 export type BatchFilterState = {
   stage: StageFilter;
   region: string;
   sort: SortOrder;
-};
-
-export type BatchTxHashes = {
-  harvested?: `0x${string}`;
-  processed?: `0x${string}`;
-  roasted?: `0x${string}`;
-  distributed?: `0x${string}`;
-  verified?: `0x${string}`;
 };

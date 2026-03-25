@@ -12,10 +12,22 @@ export type MediaPreviewProps = {
 };
 
 export type MediaUploaderProps = {
-  mediaFiles: MediaFile[];
   onAddFiles: (files: FileList | null) => void;
-  onUpdateDescription: (index: number, description: string) => void;
-  onRemoveFile: (index: number) => void;
+  isDisabled?: boolean;
+};
+
+export type BatchData = {
+  farmer: string;
+  processor: string;
+  roaster: string;
+  distributor: string;
+  batchId: bigint;
+};
+
+export type BatchSelectProps = {
+  value: string;
+  onSelect: (batchNumber: string) => void;
+  requiredStage: "Harvested" | "Processed" | "Roasted";
   isDisabled?: boolean;
 };
 

@@ -38,16 +38,21 @@ const BatchAlbum = ({ batch }: { batch: any }) => {
   }
 
   return (
-    <div className="flex flex-col h-full items-center gap-3 pb-4">
-      <span className="text-hint text-xs text-center">{items[currentIndex]?.label || "Image Metadata"}</span>
+    <div className="flex flex-col h-full gap-3">
+      <div className="flex-1 flex flex-col items-center justify-center gap-2 min-h-0">
+        <span className="text-hint text-xs text-center">{items[currentIndex]?.label || ""}</span>
 
-      <div className="carousel w-full flex-1 rounded-2xl overflow-hidden bg-base-200">
-        {items.map((item, i) => (
-          <div key={i} id={`media-${i}`} className="carousel-item w-full justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={item.url} alt={item.label} className="w-full h-full object-contain" />
-          </div>
-        ))}
+        <div className="relative w-full flex-1 min-h-0 rounded-2xl overflow-hidden bg-base-200">
+          {items.map((item, i) => (
+            <div
+              key={i}
+              className={`absolute inset-0 ${i === currentIndex ? "flex" : "hidden"} items-center justify-center`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={item.url} alt={item.label} className="w-full h-full object-contain" />
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="flex justify-center gap-2 shrink-0 flex-wrap">

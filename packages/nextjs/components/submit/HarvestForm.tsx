@@ -2,72 +2,32 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FormFooter } from "./FormFooter";
+import { FormHeader } from "./FormHeader";
+import { MediaPreview } from "./MediaPreview";
 import { MediaUploader } from "./MediaUploader";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { BatchMetadata } from "~~/types/batchmetadata";
-import { HarvestFormState, MediaFile } from "~~/types/form";
-import { REGIONS, VARIETIES } from "~~/utils/coffee";
-import { toUnixSeconds } from "~~/utils/coffee";
-import { getOrCreateGroup, pinFile, pinJSON, pinQR } from "~~/utils/pinata";
+import { useFormFields } from "~~/hooks/useFormFields";
+import { useMediaFiles } from "~~/hooks/useMediaFiles";
+import { BatchMetadata } from "~~/types/batch";
+import { REGIONS, VARIETIES, toUnixSeconds } from "~~/utils/coffee";
+import { HARVEST_INITIAL_FORM } from "~~/utils/forms";
+import { getOrCreateGroup, pinJSON, pinQR, uploadGallery } from "~~/utils/pinata";
 import { notification } from "~~/utils/scaffold-eth";
 
-const INITIAL_FORM: HarvestFormState = {
-  batchNumber: "",
-  farmName: "",
-  region: "0",
-  variety: "0",
-  elevation: "",
-  harvestDate: "",
-  harvestWeight: "",
-  latitude: "",
-  longitude: "",
-};
-
 export const HarvestForm = () => {
-  const [form, setForm] = useState<HarvestFormState>(INITIAL_FORM);
-  const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
+  const { form, updateField, resetForm: resetFormFields } = useFormFields(HARVEST_INITIAL_FORM);
+  const { mediaFiles, addFiles, updateDescription, removeFile, resetFiles } = useMediaFiles();
   const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
-  const { writeContractAsync, isMining } = useScaffoldWriteContract({ contractName: "CoffeeTracker" });
-
-  const updateField = (field: keyof HarvestFormState, value: string) => {
-    setForm(current => ({ ...current, [field]: value }));
-  };
-
-  const resetForm = () => {
-    setForm(INITIAL_FORM);
-    setMediaFiles([]);
-  };
 
   const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
 
-  const addFiles = (files: FileList | null) => {
-    if (!files) return;
+  const { writeContractAsync, isMining } = useScaffoldWriteContract({ contractName: "CoffeeTracker" });
 
-    const accepted = Array.from(files).filter(f => f.type === "image/png" || f.type === "image/jpeg");
-
-    if (accepted.length !== files.length) {
-      notification.error("Only PNG and JPG files are accepted.");
-    }
-
-    const newMedia: MediaFile[] = accepted.map(file => ({
-      file,
-      description: "",
-      mediapreview: URL.createObjectURL(file),
-    }));
-
-    setMediaFiles(prev => [...prev, ...newMedia]);
-  };
-
-  const updateDescription = (index: number, description: string) => {
-    setMediaFiles(prev => prev.map((item, i) => (i === index ? { ...item, description } : item)));
-  };
-
-  const removeFile = (index: number) => {
-    setMediaFiles(prev => {
-      URL.revokeObjectURL(prev[index].mediapreview);
-      return prev.filter((_, i) => i !== index);
-    });
+  const resetForm = () => {
+    resetFormFields();
+    resetFiles();
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -104,16 +64,8 @@ export const HarvestForm = () => {
     try {
       const groupId = await getOrCreateGroup("CoffeeTracker-local-batch");
       const qrGroupId = await getOrCreateGroup("CoffeeTracker-local-qr");
-      const mediaGroupId = await getOrCreateGroup("CoffeeTracker-local-media");
       const qrCID = await pinQR(form.batchNumber.trim(), qrGroupId);
-
-      const galleryCIDs = await Promise.all(
-        mediaFiles.map(async ({ file, description }) => {
-          const cid = await pinFile(file, `${form.batchNumber.trim()}-${file.name}`, mediaGroupId);
-
-          return { cid, description };
-        }),
-      );
+      const galleryCIDs = await uploadGallery(mediaFiles, form.batchNumber.trim());
 
       const metadata: BatchMetadata = {
         name: `${REGIONS[Number(form.region)]} ${VARIETIES[Number(form.variety)]} - ${form.batchNumber.trim()}`,
@@ -170,7 +122,7 @@ export const HarvestForm = () => {
             resetForm();
             setTimeout(() => {
               router.push("/explore");
-            }, 1000);
+            }, 500);
           },
         },
       );
@@ -185,171 +137,150 @@ export const HarvestForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="rounded-box border border-base-300 bg-base-100 shadow-sm">
-      {/* Header */}
-      <div className="px-6 py-6 sm:px-8 border-b border-base-300">
-        <h2 className="heading-card text-4xl mb-2">Harvest Batch</h2>
-        <p className="text-muted text-sm m-0">Enter the initial coffee batch data.</p>
-      </div>
+      <FormHeader title="Harvest Batch" description="Enter the initial coffee batch data." />
 
       <div className="px-6 py-6 sm:px-8 sm:py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch auto-rows-fr md:auto-rows-auto">
-          {/* Col 1 */}
-          <div className="flex flex-col gap-4 h-full">
-            <label className="form-control w-full">
-              <span className="text-label mb-2">Batch Number</span>
-              <input
-                className="input input-bordered w-full text-sm h-11"
-                placeholder="KONA-2026-201"
-                value={form.batchNumber}
-                onChange={e => updateField("batchNumber", e.target.value)}
-              />
-            </label>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 gap-x-6">
+          {/* Row 1, Col 1 */}
+          <label className="form-control w-full">
+            <span className="text-label mb-2">Batch Number</span>
+            <input
+              className="input input-bordered w-full text-sm h-10"
+              placeholder="KONA-2026-201"
+              value={form.batchNumber}
+              onChange={e => updateField("batchNumber", e.target.value)}
+            />
+          </label>
 
-            <label className="form-control w-full">
-              <span className="text-label mb-2">Variety</span>
-              <select
-                className="select select-bordered w-full text-sm h-11"
-                value={form.variety}
-                onChange={e => updateField("variety", e.target.value)}
-              >
-                {Object.entries(VARIETIES).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
+          {/* Row 1, Col 2 */}
+          <label className="form-control w-full">
+            <span className="text-label mb-2">Farm Name</span>
+            <input
+              className="input input-bordered w-full text-sm h-10"
+              placeholder="Holualoa Kona Coffee Co"
+              value={form.farmName}
+              onChange={e => updateField("farmName", e.target.value)}
+            />
+          </label>
 
-            <label className="form-control w-full">
-              <span className="text-label mb-2">Harvest Date</span>
-              <input
-                className="input input-bordered w-full text-sm h-11"
-                type="date"
-                value={form.harvestDate}
-                onChange={e => updateField("harvestDate", e.target.value)}
-              />
-            </label>
-
-            <label className="form-control w-full">
-              <span className="text-label mb-2">Elevation (m)</span>
-              <input
-                className="input input-bordered w-full text-sm h-11"
-                inputMode="numeric"
-                min="0"
-                placeholder="792"
-                type="number"
-                value={form.elevation}
-                onChange={e => updateField("elevation", e.target.value)}
-              />
-            </label>
-          </div>
-
-          {/* Col 2 */}
-          <div className="flex flex-col gap-4 h-full">
-            <label className="form-control w-full">
-              <span className="text-label mb-2">Farm Name</span>
-              <input
-                className="input input-bordered w-full text-sm h-11"
-                placeholder="Holualoa Kona Coffee Co"
-                value={form.farmName}
-                onChange={e => updateField("farmName", e.target.value)}
-              />
-            </label>
-
-            <label className="form-control w-full">
-              <span className="text-label mb-2">Region</span>
-              <select
-                className="select select-bordered w-full text-sm h-11"
-                value={form.region}
-                onChange={e => updateField("region", e.target.value)}
-              >
-                {Object.entries(REGIONS).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="form-control w-full">
-              <span className="text-label mb-2">Harvest Weight (kg)</span>
-              <input
-                className="input input-bordered w-full text-sm h-11"
-                inputMode="numeric"
-                min="0"
-                placeholder="1480"
-                type="number"
-                value={form.harvestWeight}
-                onChange={e => updateField("harvestWeight", e.target.value)}
-              />
-            </label>
-
-            <div className="flex flex-col gap-2">
-              <span className="text-label">Location (Lat/Long)</span>
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  className="input input-bordered w-full text-sm h-11"
-                  inputMode="decimal"
-                  placeholder="Lat"
-                  step="0.000001"
-                  type="number"
-                  value={form.latitude}
-                  onChange={e => updateField("latitude", e.target.value)}
-                />
-                <input
-                  className="input input-bordered w-full text-sm h-11"
-                  inputMode="decimal"
-                  placeholder="Long"
-                  step="0.000001"
-                  type="number"
-                  value={form.longitude}
-                  onChange={e => updateField("longitude", e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Col 3 */}
-          <div className="flex flex-col h-full">
-            <span className="text-label mb-2">Media</span>
-            <div className="flex-1 min-h-0">
-              <MediaUploader
+          {/* Row 1, Col 3 — Spans 4 Rows (Last on mobile) */}
+          <div className="order-last md:order-none md:col-start-3 md:row-start-1 md:row-span-4 relative">
+            <div className="md:absolute md:inset-0 flex flex-col gap-2 overflow-y-auto">
+              <MediaUploader onAddFiles={addFiles} isDisabled={isDisabled} />
+              <MediaPreview
                 mediaFiles={mediaFiles}
-                onAddFiles={addFiles}
                 onUpdateDescription={updateDescription}
                 onRemoveFile={removeFile}
                 isDisabled={isDisabled}
               />
             </div>
           </div>
+
+          {/* Row 2, Col 1 */}
+          <label className="form-control w-full">
+            <span className="text-label mb-2">Variety</span>
+            <select
+              className="select select-bordered w-full text-sm h-10"
+              value={form.variety}
+              onChange={e => updateField("variety", e.target.value)}
+            >
+              {Object.entries(VARIETIES).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {/* Row 2, Col 2 */}
+          <label className="form-control w-full">
+            <span className="text-label mb-2">Region</span>
+            <select
+              className="select select-bordered w-full text-sm h-10"
+              value={form.region}
+              onChange={e => updateField("region", e.target.value)}
+            >
+              {Object.entries(REGIONS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {/* Row 3, Col 1 */}
+          <label className="form-control w-full">
+            <span className="text-label mb-2">Harvest Date</span>
+            <input
+              className="input input-bordered w-full text-sm h-10"
+              type="date"
+              value={form.harvestDate}
+              onChange={e => updateField("harvestDate", e.target.value)}
+            />
+          </label>
+
+          {/* Row 3, Col 2 */}
+          <label className="form-control w-full">
+            <span className="text-label mb-2">Harvest Weight (kg)</span>
+            <input
+              className="input input-bordered w-full text-sm h-10"
+              inputMode="numeric"
+              min="0"
+              placeholder="1360"
+              type="number"
+              value={form.harvestWeight}
+              onChange={e => updateField("harvestWeight", e.target.value)}
+            />
+          </label>
+
+          {/* Row 4, Col 1 */}
+          <label className="form-control w-full">
+            <span className="text-label mb-2">Elevation (m)</span>
+            <input
+              className="input input-bordered w-full text-sm h-10"
+              inputMode="numeric"
+              min="0"
+              placeholder="670"
+              type="number"
+              value={form.elevation}
+              onChange={e => updateField("elevation", e.target.value)}
+            />
+          </label>
+
+          {/* Row 4, Col 2 */}
+          <div className="flex flex-col gap-2">
+            <span className="text-label">Location (Lat/Long)</span>
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                className="input input-bordered w-full text-sm h-10"
+                inputMode="decimal"
+                placeholder="19.527610"
+                step="0.000001"
+                type="number"
+                value={form.latitude}
+                onChange={e => updateField("latitude", e.target.value)}
+              />
+              <input
+                className="input input-bordered w-full text-sm h-10"
+                inputMode="decimal"
+                placeholder="-155.916630"
+                step="0.000001"
+                type="number"
+                value={form.longitude}
+                onChange={e => updateField("longitude", e.target.value)}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between gap-4 flex-wrap border-t border-base-300 px-6 py-5 sm:px-8">
-        <p className="text-hint text-xs leading-relaxed">
-          Batch data and media are pinned to IPFS and linked to this batch on-chain for permanent transparency.
-        </p>
-
-        <div className="flex items-center gap-3 w-full sm:w-80">
-          <button
-            type="button"
-            className="btn btn-ghost border flex-1 text-base tracking-wide whitespace-nowrap"
-            onClick={resetForm}
-            disabled={isDisabled}
-          >
-            Reset
-          </button>
-
-          <button
-            type="submit"
-            className="btn btn-primary flex-1 text-base tracking-wide whitespace-nowrap"
-            disabled={isDisabled}
-          >
-            {isUploading ? "Uploading..." : isMining ? "Submitting..." : "Submit Batch"}
-          </button>
-        </div>
-      </div>
+      <FormFooter
+        onReset={resetForm}
+        isUploading={isUploading}
+        isMining={isMining}
+        submitLabel="Submit Batch"
+        disabled={isDisabled}
+      />
     </form>
   );
 };

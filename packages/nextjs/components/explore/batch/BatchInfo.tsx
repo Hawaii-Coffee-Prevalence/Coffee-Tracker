@@ -5,7 +5,7 @@ import BatchData from "./BatchData";
 import BatchJourney from "./BatchJourney";
 import BatchOverview from "./BatchOverview";
 import BatchTabs from "./BatchTabs";
-import { BatchTxHashes } from "~~/types/coffee";
+import { BatchTxHashes } from "~~/types/batch";
 import { REGION_TO_ISLAND, STAGE_STYLES, getStage } from "~~/utils/coffee";
 
 const BatchInfo = ({ batch, txHashes }: { batch: any; txHashes: BatchTxHashes }) => {

@@ -3,7 +3,9 @@
 import MapPin from "./MapPin";
 import MapPopup from "./MapPopup";
 import { Marker as MarkerGL } from "react-map-gl/maplibre";
-import { CoffeeBatch, Coordinates, Stage } from "~~/types/coffee";
+import { CoffeeBatch } from "~~/types/batch";
+import { Coordinates } from "~~/types/batch";
+import { Stage } from "~~/types/coffee";
 import { STAGE_COLORS, getStage } from "~~/utils/coffee";
 
 const Marker = MarkerGL as any;

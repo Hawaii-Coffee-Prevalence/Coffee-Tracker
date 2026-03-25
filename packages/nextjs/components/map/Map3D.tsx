@@ -5,7 +5,7 @@ import MapMarker from "./MapMarker";
 import { LngLatBounds } from "maplibre-gl";
 import MapGL, { MapRef, NavigationControl as NavControl } from "react-map-gl/maplibre";
 import Skeleton from "~~/components/Skeleton";
-import { CoffeeBatch, Coordinates } from "~~/types/coffee";
+import { CoffeeBatch, Coordinates } from "~~/types/batch";
 import { STAGES, STAGE_COLORS } from "~~/utils/coffee";
 
 const Map = MapGL as any;
