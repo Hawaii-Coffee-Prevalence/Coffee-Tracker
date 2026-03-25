@@ -212,7 +212,7 @@ const Home: NextPage = () => {
               title: "Record a harvest",
               role: "Farmer",
               desc: "Submit a new coffee batch with farm details, region, variety, and harvest weight.",
-              href: "/debug",
+              href: "/harvest",
               roleStyle: {
                 background: colors.greenPale,
                 color: colors.greenDark,
@@ -223,14 +223,14 @@ const Home: NextPage = () => {
               title: "Log processing",
               role: "Processor",
               desc: "Record processing method, moisture content, and SCA quality score.",
-              href: "/debug",
+              href: "/process",
               roleStyle: { background: "#E8F0E8", color: "#2D4A2D", border: `1px solid ${colors.greenLight}` },
             },
             {
               title: "Log roasting",
               role: "Roaster",
               desc: "Add roast level, cupping notes, and before/after weights.",
-              href: "/debug",
+              href: "/roast",
               roleStyle: {
                 background: colors.coffeeCream,
                 color: colors.coffeeMid,
@@ -241,8 +241,19 @@ const Home: NextPage = () => {
               title: "Distribute batch",
               role: "Distributor",
               desc: "Mark a roasted batch as distributed and log transport time.",
-              href: "/debug",
+              href: "/distribute",
               roleStyle: { background: colors.coffeeParchment, color: colors.coffeeDark, border: `1px solid #C4956A` },
+            },
+            {
+              title: "Verify batch",
+              role: "Admin",
+              desc: "Admin role verifies the batch and finalizes provenance.",
+              href: "/verify",
+              roleStyle: {
+                background: colors.coffeeCream,
+                color: colors.coffeeDark,
+                border: `1px solid ${colors.coffeeParchment}`,
+              },
             },
           ].map((action, i) => (
             <Link key={i} href={action.href} style={{ textDecoration: "none" }}>
