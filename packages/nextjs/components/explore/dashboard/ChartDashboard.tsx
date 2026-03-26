@@ -1,7 +1,7 @@
-import { PipelineChart } from "./PipelineChart";
-import { RegionChart } from "./RegionChart";
-import { ScaChart } from "./ScaChart";
-import { Skeleton } from "~~/components/Skeleton";
+import PipelineChart from "./PipelineChart";
+import RegionChart from "./RegionChart";
+import ScaChart from "./ScaChart";
+import Skeleton from "~~/components/Skeleton";
 import { useCoffeeTracker } from "~~/hooks/useCoffeeTracker";
 import { PIPELINE_SEGMENTS, getRegionColor } from "~~/utils/coffee";
 
@@ -58,7 +58,7 @@ const PipelineCard = ({ stats, isLoading }: CardProps) => {
   const total = stats?.totalBatches ?? 0;
 
   return (
-    <div className="ghost-surface hover:!bg-base-100 p-7 flex flex-col gap-4 h-full">
+    <div className="card-surface hover:!bg-base-100 p-7 flex flex-col gap-4 h-full">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="text-label text-muted">Supply Chain Pipeline</div>
@@ -118,7 +118,7 @@ const RegionLegend = ({ stats, isLoading }: CardProps) => {
 
 const RegionCard = ({ stats, isLoading }: CardProps) => {
   return (
-    <div className="ghost-surface hover:!bg-base-100 p-7 flex flex-col gap-4 h-full">
+    <div className="card-surface hover:!bg-base-100 p-7 flex flex-col gap-4 h-full">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="text-label text-muted">Batches By Region</div>
@@ -155,7 +155,7 @@ const ScaLegend = ({ stats }: { stats: Stats | null }) => (
 );
 
 const ScaCard = ({ stats, isLoading }: CardProps) => (
-  <div className="ghost-surface hover:!bg-base-100 p-7 flex flex-col gap-4 h-full">
+  <div className="card-surface hover:!bg-base-100 p-7 flex flex-col gap-4 h-full">
     {/* Header */}
     <div className="flex items-center justify-between">
       <div className="text-label text-muted">SCA Score Distribution</div>
@@ -174,15 +174,15 @@ const ScaCard = ({ stats, isLoading }: CardProps) => (
   </div>
 );
 
-export const ChartDashboard = () => {
+const ChartDashboard = () => {
   const { stats, isLoading } = useCoffeeTracker();
   return (
-    <div className="overflow-x-auto mb-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[300px] gap-px bg-base-300 border border-base-300 rounded-xl overflow-hidden">
-        <PipelineCard stats={stats} isLoading={isLoading} />
-        <RegionCard stats={stats} isLoading={isLoading} />
-        <ScaCard stats={stats} isLoading={isLoading} />
-      </div>
+    <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[300px] gap-px bg-base-300 border border-base-300 rounded-xl overflow-hidden shadow-sm mb-6">
+      <PipelineCard stats={stats} isLoading={isLoading} />
+      <RegionCard stats={stats} isLoading={isLoading} />
+      <ScaCard stats={stats} isLoading={isLoading} />
     </div>
   );
 };
+
+export default ChartDashboard;

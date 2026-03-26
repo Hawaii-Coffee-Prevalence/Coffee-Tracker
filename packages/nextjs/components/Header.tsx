@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bars3Icon, QrCodeIcon } from "@heroicons/react/24/outline";
-import { QrModal } from "~~/components/QrModal";
-import { SwitchTheme } from "~~/components/SwitchTheme";
+import QrModal from "~~/components/QrModal";
+import SwitchTheme from "~~/components/SwitchTheme";
 import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -63,9 +63,13 @@ export const HeaderMenuLinks = () => {
   );
 };
 
-export const Header = () => {
+const Header = () => {
   const burgerMenuRef = useRef<HTMLDetailsElement>(null);
   const [qrOpen, setQrOpen] = useState(false);
+
+  const handleQrClose = useCallback(() => {
+    setQrOpen(false);
+  }, []);
 
   useOutsideClick(burgerMenuRef, () => {
     burgerMenuRef?.current?.removeAttribute("open");
@@ -105,7 +109,7 @@ export const Header = () => {
             <Bars3Icon className="h-5 w-5" />
           </summary>
           <ul
-            className="dropdown-content menu p-2 mt-2 bg-base-100 border border-base-300 rounded-xl shadow-lg w-44 list-none"
+            className="dropdown-content menu p-2 mt-2 bg-base-100 border border-base-300 rounded-xl shadow-lg w-44 list-none gap-1"
             onClick={() => burgerMenuRef?.current?.removeAttribute("open")}
           >
             <HeaderMenuLinks />
@@ -113,7 +117,9 @@ export const Header = () => {
         </details>
       </div>
 
-      <QrModal isOpen={qrOpen} onClose={() => setQrOpen(false)} />
+      <QrModal isOpen={qrOpen} onClose={handleQrClose} />
     </header>
   );
 };
+
+export default Header;

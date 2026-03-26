@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { Popup as PopupGL } from "react-map-gl/maplibre";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { useCoffeeTracker } from "~~/hooks/useCoffeeTracker";
-import { CoffeeBatch, Coordinates, Stage } from "~~/types/coffee";
+import { CoffeeBatch } from "~~/types/batch";
+import { Coordinates } from "~~/types/batch";
+import { Stage } from "~~/types/coffee";
 import { REGIONS, STAGE_STYLES, VARIETIES } from "~~/utils/coffee";
 
 const Popup = PopupGL as any;
@@ -16,13 +17,8 @@ type MapPopupProps = {
   onClose: () => void;
 };
 
-export const MapPopup = ({ batch, location, stage, onClose }: MapPopupProps) => {
-  const { txHashMap } = useCoffeeTracker();
-
-  const batchTxHashes = txHashMap[batch.batchId.toString()];
-  const linkHash =
-    batchTxHashes?.harvested || batchTxHashes?.processed || batchTxHashes?.roasted || batchTxHashes?.distributed;
-  const href = linkHash ? `/explore/transaction/${linkHash}` : "#";
+const MapPopup = ({ batch, location, stage, onClose }: MapPopupProps) => {
+  const href = `/explore/batch/${batch.batchNumber}`;
 
   return (
     <Popup
@@ -35,7 +31,7 @@ export const MapPopup = ({ batch, location, stage, onClose }: MapPopupProps) => 
       onClose={onClose}
       className="bare-popup z-50"
     >
-      <div className="bg-base-100 border border-base-300 rounded-xl shadow-center overflow-hidden min-w-[200px]">
+      <div className="modal-surface min-w-[200px]">
         <div className="px-3 py-2 flex flex-col">
           <div className="flex flex-col">
             <div className="flex items-center justify-between gap-2">
@@ -93,3 +89,5 @@ export const MapPopup = ({ batch, location, stage, onClose }: MapPopupProps) => 
     </Popup>
   );
 };
+
+export default MapPopup;
