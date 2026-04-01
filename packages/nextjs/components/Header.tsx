@@ -3,11 +3,13 @@
 import React, { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAccount } from "wagmi";
 import { Bars3Icon, QrCodeIcon } from "@heroicons/react/24/outline";
 import QrModal from "~~/components/QrModal";
 import SwitchTheme from "~~/components/SwitchTheme";
 import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
+import { useUserRole } from "~~/hooks/useCoffeeTracker";
 
 type HeaderMenuLink = {
   label: string;
@@ -39,10 +41,15 @@ export const menuLinks: HeaderMenuLink[] = [
 
 export const HeaderMenuLinks = () => {
   const pathname = usePathname();
+  const { address } = useAccount();
+  const { userRole } = useUserRole(address);
 
   return (
     <>
       {menuLinks.map(({ label, href }) => {
+        if (label === "Admin" && userRole !== "Admin") {
+          return null;
+        }
         const isActive = pathname === href;
         return (
           <li key={href}>
