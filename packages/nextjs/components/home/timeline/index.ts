@@ -22,7 +22,7 @@ export const CONTENT = [
     borderColor: "border-stage-harvest",
     header: "Where Every\nJourney Begins",
     content:
-      "Hawaiian coffee cherries are hand-picked at peak ripeness by farmers across the islands. Each harvest is logged on-chain with the farm name, elevation, location, and weight, creating a tamper-proof foundation that every step after this one is built on.",
+      "Hawaiian coffee cherries are picked by hand at peak ripeness by farmers across the islands. Each harvest is logged on-chain with the farm name, elevation, location, and weight, creating an immutable foundation for the journey ahead.",
   },
   {
     step: 2,
@@ -31,7 +31,7 @@ export const CONTENT = [
     borderColor: "border-stage-process",
     header: "Cherry to\nGreen Bean",
     content:
-      "After harvest, cherries go through washing, drying, or fermentation to separate the seed from the fruit. The method chosen here shapes everything about the final cup. Moisture content, SCA score, processing dates, and weight are all captured, preserving the decisions that turn a raw cherry into a green bean ready for the next step.",
+      "After harvest, cherries go through washing, drying, or fermentation to separate the seed from the fruit. Moisture content, SCA score, temperature, humidity, and weight are all captured, preserving the decisions that turn a raw cherry into a green bean.",
   },
   {
     step: 3,
@@ -40,7 +40,7 @@ export const CONTENT = [
     borderColor: "border-stage-roast",
     header: "Unlocking\nthe Flavor",
     content:
-      "Green beans are then roasted to unlock the aromas and flavors inside. The roast level, cupping notes, method, and yield are recorded, tying the character of your cup to a specific moment in the roastery.",
+      "Green beans are then roasted to unlock the aromas and flavors inside. The roast level, cupping notes, transport time, and yield are recorded, tying the character of your cup to a specific moment in the roastery.",
   },
   {
     step: 4,

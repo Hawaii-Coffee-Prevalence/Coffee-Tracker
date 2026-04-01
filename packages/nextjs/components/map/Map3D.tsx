@@ -14,14 +14,14 @@ const NavigationControl = NavControl as any;
 const MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY;
 
 const HAWAII_BOUNDS: [[number, number], [number, number]] = [
-  [-162.0, 17.5], // - SW
-  [-153.0, 23.7], // + NE
+  [-165.5, 16.0], // SW
+  [-149.5, 25.0], // NE
 ];
 
 const INITIAL_VIEW_STATE = {
   longitude: -157.5,
   latitude: 20.5,
-  zoom: 5.5,
+  zoom: 6.5,
   pitch: 0,
   bearing: 0,
 };
@@ -167,7 +167,7 @@ const Map3D = ({
             mapStyle={`https://api.maptiler.com/maps/topo-v4/style.json?key=${MAPTILER_KEY}`}
             initialViewState={INITIAL_VIEW_STATE}
             maxBounds={HAWAII_BOUNDS}
-            minZoom={5.0}
+            minZoom={5.5}
             maxZoom={20.0}
             maxPitch={85}
             onLoad={onLoad}

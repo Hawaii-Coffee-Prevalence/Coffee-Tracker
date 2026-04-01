@@ -22,7 +22,7 @@ const ChainSection = () => {
 
   const headerOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
   const headerMaxHeight = useTransform(scrollYProgress, [0, 0.08], ["250px", "0px"]);
-  const headerMargin = useTransform(scrollYProgress, [0, 0.08], ["3rem", "0rem"]);
+  const headerMargin = useTransform(scrollYProgress, [0, 0.08], ["2.5rem", "0rem"]);
   const headerY = useTransform(scrollYProgress, [0, 0.08], [0, -30]);
 
   const mappedProgress = useTransform(scrollYProgress, [0.15, 0.85], [0, 1]);
@@ -52,9 +52,9 @@ const ChainSection = () => {
 
   return (
     <div ref={containerRef} className="h-[400vh] relative w-full">
-      <div className="sticky top-[4rem] h-[calc(100vh-4rem)] w-full section-padding flex flex-col items-center justify-start overflow-hidden">
+      <div className="sticky top-[4rem] h-[calc(100vh-4rem)] w-full main-page-section-padding flex flex-col items-center justify-start overflow-hidden">
         <motion.div
-          className="w-full max-w-7xl mx-auto flex-shrink-0 origin-top overflow-hidden"
+          className="w-full max-w-7xl mx-auto flex-shrink-0 origin-top"
           style={{
             opacity: headerOpacity,
             maxHeight: headerMaxHeight,

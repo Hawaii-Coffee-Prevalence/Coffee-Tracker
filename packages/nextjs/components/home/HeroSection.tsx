@@ -27,9 +27,9 @@ const HeroSection = ({ onOpenQr }: Props) => {
       </h1>
 
       <p className="text-muted text-base font-light leading-relaxed max-w-md mb-10 text-center mx-auto">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sem erat, finibus non nisl nec, scelerisque
-        rutrum ligula. Cras dictum congue ante commodo posuere. Etiam imperdiet eu lacus facilisis ornare. Donec
-        eleifend nec quam ac suscipit.
+        Transparent provenance secured on the blockchain.
+        <br />
+        Decentralized tracking verifies the authentic island roots and complete physical history of every coffee batch.
       </p>
 
       <div className="flex flex-row w-full max-w-md justify-center gap-3 mb-5 mx-auto">

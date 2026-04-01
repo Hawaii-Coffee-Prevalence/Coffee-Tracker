@@ -18,19 +18,19 @@ const Home: NextPage = () => {
   return (
     <div className="min-h-screen bg-base-200">
       <QrModal isOpen={qrOpen} onClose={handleQrClose} />
-      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] border border-base-300 section-padding w-full">
+      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] section-padding w-full">
         <HeroSection onOpenQr={() => setQrOpen(true)} />
       </section>
 
-      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] border border-base-300 section-padding w-full">
+      <section className="flex flex-col items-center min-h-[calc(100vh-4rem)] main-page-section-padding w-full">
         <MapSection />
       </section>
 
-      <section className="border border-base-300 w-full">
+      <section className="w-full">
         <ChainSection />
       </section>
 
-      <section className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] border border-base-300 section-padding w-full">
+      <section className="flex flex-col items-center min-h-[calc(100vh-4rem)] main-page-section-padding w-full">
         <ActivitySection />
       </section>
     </div>
