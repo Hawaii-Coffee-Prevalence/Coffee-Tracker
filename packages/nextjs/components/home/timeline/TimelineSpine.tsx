@@ -13,7 +13,7 @@ const TimelineSpine = ({
   fillHeight: any;
 }) => {
   return (
-    <div className="relative flex-shrink-0 order-1 lg:order-2 w-3 md:w-4 bg-base-300 rounded-full flex flex-col items-center mt-6 lg:mt-8 mb-6 lg:mb-8">
+    <div className="relative flex-shrink-0 order-1 lg:order-2 w-6 bg-base-300 rounded-full flex flex-col items-center overflow-visible mt-8 mb-8">
       {/* Step Nodes */}
       {Array.from({ length: stepsLength }).map((_, index) => {
         {
@@ -22,28 +22,28 @@ const TimelineSpine = ({
         const nodePosition = (index / (stepsLength - 1)) * 100;
         const isActive = activeProgress >= index / (stepsLength - 1) - 0.05;
 
-        {
-          /* Default dot color changes based on active state */
-        }
-        let dotColorClass = "border-base-300 bg-base-300 text-cream/90";
+        // Inactive nodes use border-transparent so there is no visible ring during
+        // the colour transition when scrolling back up.
+        let dotColorClass = "border-transparent bg-base-300 text-base-content/50";
 
         if (isActive) {
           const stage = STAGES[index];
           if (stage) {
-            dotColorClass = `border-none ${STAGE_STYLES[stage]}`;
+            dotColorClass = `border-transparent ${STAGE_STYLES[stage]}`;
           }
         }
 
         return (
           <div
             key={index}
-            className={`absolute w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center rounded-full border-[4px] lg:border-[6px] z-10 transition-colors duration-500 shadow-md ${dotColorClass}`}
+            className={`absolute w-15 h-15 flex items-center justify-center rounded-full border-2 z-10 transition-colors duration-300 shadow-md ${dotColorClass}`}
             style={{
               top: `${nodePosition}%`,
-              transform: "translateY(-50%)",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
             }}
           >
-            <span className="font-bold text-sm lg:text-base leading-none">{index + 1}</span>
+            <span className="font-bold text-xl leading-none">{index + 1}</span>
           </div>
         );
       })}

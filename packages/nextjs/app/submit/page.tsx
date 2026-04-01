@@ -63,7 +63,7 @@ const SubmitPage: NextPage = () => {
 
   return (
     <div className="w-full min-h-[calc(100vh-4rem)] bg-base-200">
-      <section className="max-w-7xl mx-auto flex flex-col section-padding py-10">
+      <section className="max-w-7xl mx-auto flex flex-col section-padding">
         {/* Admin Role Selector */}
         {userRole === "Admin" && (
           <div className="flex justify-end mb-4">

@@ -22,7 +22,7 @@ export const CONTENT = [
     borderColor: "border-stage-harvest",
     header: "Where Every\nJourney Begins",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sem erat, finibus non nisl nec, scelerisque rutrum ligula. Cras dictum congue ante commodo posuere. Etiam imperdiet eu lacus facilisis ornare. Donec eleifend nec quam ac suscipit.",
+      "Hawaiian coffee cherries are hand-picked at peak ripeness by farmers across the islands. Each harvest is logged on-chain with the farm name, elevation, location, and weight, creating a tamper-proof foundation that every step after this one is built on.",
   },
   {
     step: 2,
@@ -31,16 +31,16 @@ export const CONTENT = [
     borderColor: "border-stage-process",
     header: "Cherry to\nGreen Bean",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sem erat, finibus non nisl nec, scelerisque rutrum ligula. Cras dictum congue ante commodo posuere. Etiam imperdiet eu lacus facilisis ornare. Donec eleifend nec quam ac suscipit.",
+      "After harvest, cherries go through washing, drying, or fermentation to separate the seed from the fruit. The method chosen here shapes everything about the final cup. Moisture content, SCA score, processing dates, and weight are all captured, preserving the decisions that turn a raw cherry into a green bean ready for the next step.",
   },
   {
     step: 3,
     title: "Roast",
     color: "text-stage-roast!",
     borderColor: "border-stage-roast",
-    header: "Unlocking\nthe Flavour",
+    header: "Unlocking\nthe Flavor",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sem erat, finibus non nisl nec, scelerisque rutrum ligula. Cras dictum congue ante commodo posuere. Etiam imperdiet eu lacus facilisis ornare. Donec eleifend nec quam ac suscipit.",
+      "Green beans are then roasted to unlock the aromas and flavors inside. The roast level, cupping notes, method, and yield are recorded, tying the character of your cup to a specific moment in the roastery.",
   },
   {
     step: 4,
@@ -49,7 +49,7 @@ export const CONTENT = [
     borderColor: "border-stage-distribute",
     header: "From Island\nto Your Cup",
     content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sem erat, finibus non nisl nec, scelerisque rutrum ligula. Cras dictum congue ante commodo posuere. Etiam imperdiet eu lacus facilisis ornare. Donec eleifend nec quam ac suscipit.",
+      "Finally, the coffee travels to cafes, homes, and cups around the world. Every bag is tagged with a unique QR code, letting anyone trace it straight back to its island roots in a single scan.",
   },
 ];
 

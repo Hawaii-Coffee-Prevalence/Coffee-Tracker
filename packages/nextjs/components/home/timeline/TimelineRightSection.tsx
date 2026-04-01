@@ -5,7 +5,7 @@ import { StepType } from "./index";
 import { AnimatePresence, motion } from "framer-motion";
 
 const TimelineRightSection = ({ activeItem, activeIndex }: { activeItem: StepType; activeIndex: number }) => (
-  <div className="flex-1 order-2 lg:order-3 flex flex-col justify-center items-start pl-8 md:pl-16 text-left relative min-h-0">
+  <div className="flex-1 order-2 lg:order-3 flex flex-col justify-center items-start pl-10 text-left relative min-h-0">
     {/* Mobile Header */}
     <AnimatePresence mode="wait">
       <motion.div
@@ -35,7 +35,7 @@ const TimelineRightSection = ({ activeItem, activeIndex }: { activeItem: StepTyp
         transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
         className="w-full max-w-md"
       >
-        <p className="text-sm md:text-base text-muted leading-relaxed font-medium m-0">{activeItem.content}</p>
+        <p className="text-md text-muted leading-relaxed font-medium m-0">{activeItem.content}</p>
 
         <div className="mt-8 border-t border-base-300 pt-6 flex items-end gap-8">
           <StatItem stat={activeItem.stat1} />

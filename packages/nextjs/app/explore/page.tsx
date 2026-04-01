@@ -14,7 +14,7 @@ import { getStage } from "~~/utils/coffee";
 
 const DEFAULT_FILTERS: BatchFilterState = { stage: "All", region: "all", sort: "newest" };
 
-const BlockExplorer: NextPage = () => {
+const ExplorePage: NextPage = () => {
   const searchParams = useSearchParams();
   const { stats, txHashMap, isLoading } = useCoffeeTracker();
   const allBatches = stats?.allBatches;
@@ -59,7 +59,7 @@ const BlockExplorer: NextPage = () => {
   const { paginatedItems, currentPage, totalPages, pageSize, goToPage, setPageSize } = useBatchPagination(batches);
 
   return (
-    <div className="container mx-auto my-10 section-padding">
+    <div className="container mx-auto section-padding">
       <DataDashboard />
       <ChartDashboard />
       <BatchFilterBar
@@ -86,4 +86,4 @@ const BlockExplorer: NextPage = () => {
   );
 };
 
-export default BlockExplorer;
+export default ExplorePage;

@@ -11,8 +11,8 @@ const HeroSection = ({ onOpenQr }: Props) => {
   const newBatchesThisWeek = stats?.batchesThisWeek;
 
   return (
-    <div className="flex flex-col justify-center items-center text-center section-padding py-20 max-w-3xl mx-auto">
-      <div className="flex items-center justify-center gap-2 mb-7">
+    <div className="flex flex-col justify-center items-center text-center max-w-3xl mx-auto">
+      <div className="flex items-center justify-center gap-2 mb-8">
         <span className="w-5 h-px bg-primary" />
         <span className="text-label text-primary!">Hawaiian Coffee · On the Chain</span>
         <span className="w-5 h-px bg-primary" />

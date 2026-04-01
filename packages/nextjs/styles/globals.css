@@ -3,6 +3,40 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+:root, [data-theme="light"] {
+  --stage-harvest: #c1440e; /* Lava Orange */
+  --stage-process: #4a6741; /* Plant Green */
+  --stage-roast: #7a5c3a; /* Roast Brown */
+  --stage-distribute: #68a7c4; /* Ocean Blue */
+
+  --region-kona: #6F4E37; /* Coffee Brown */
+  --region-kau: #A84632; /* Volcanic Red */
+  --region-puna: #D46A2A; /* Sunset Orange */
+  --region-hamakua: #4A7856; /* Tropical Emerald */
+  --region-maui: #E2AA46; /* Haleakalā Gold */
+  --region-kauai: #37887E; /* Na Pali Teal */
+  --region-molokai: #9E5D4B; /* Red Earth */
+  --region-oahu: #395E8B; /* Pacific Blue */
+  --region-other: #A3A3A3; /* Neutral Cool Gray */
+}
+
+[data-theme="dark"] {
+  --stage-harvest: #ff763b; /* Magma */
+  --stage-process: #79a369; /* Matcha */
+  --stage-roast: #d4a373; /* Blonde Roast */
+  --stage-distribute: #8abdd8; /* Light Ocean Blue */
+
+--region-kona: #D9A05B;    /* Caramel */
+  --region-kau: #E56B55;     /* Bright Coral */
+  --region-puna: #FF8C42;    /* Vibrant Mango */
+  --region-hamakua: #82CA91; /* Bright Mint */
+  --region-maui: #FFD166;    /* Sun Gold */
+  --region-kauai: #5ECCC0;   /* Bright Aqua */
+  --region-molokai: #D98A76; /* Rose */
+  --region-oahu: #6BB0ED;    /* Bright Sky */
+  --region-other: #D1D1D1;   /* Light Silver */
+}
+
 @theme {
   --shadow-center: 0 0 12px -2px rgb(0 0 0 / 0.05);
   --animate-pulse-fast: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -12,12 +46,12 @@
 
   --color-amber: #b07d3a;
 
-  --color-stage-harvest: #c1440e;
-  --color-stage-process: #4a6741;
-  --color-stage-roast: #7a5c3a;
-  --color-stage-distribute: #68a7c4;
+  --color-stage-harvest: var(--stage-harvest);
+  --color-stage-process: var(--stage-process);
+  --color-stage-roast: var(--stage-roast);
+  --color-stage-distribute: var(--stage-distribute);
 
-  --color-cream: #f0e6d0;
+  --color-cream: #f5ecd7;
 }
 
 @plugin "daisyui" {
@@ -29,23 +63,23 @@
 @plugin "daisyui/theme" {
   name: "light";
 
-  --color-primary: #4a6741;
-  --color-primary-content: #f5ecd7;
-  --color-secondary: #7a5c3a;
-  --color-secondary-content: #f5ecd7;
-  --color-accent: #c1440e;
-  --color-accent-content: #f5ecd7;
-  --color-neutral: #1a0f05;
-  --color-neutral-content: #f5ecd7;
-  --color-base-100: #fffaf2;
-  --color-base-200: #f5ecd7;
-  --color-base-300: #d4b896;
-  --color-base-content: #1a0f05;
-  --color-info: #68a7c4;
-  --color-info-content: #112633;
-  --color-success: #4a6741;
-  --color-warning: #c1440e;
-  --color-error: #c1440e;
+  --color-primary: #4a6741; /* Plant Green */
+  --color-primary-content: #f5ecd7; /* Cream */
+  --color-secondary: #7a5c3a; /* Roast Brown */
+  --color-secondary-content: #f5ecd7; /* Cream */
+  --color-accent: #c1440e; /* Lava Orange */
+  --color-accent-content: #f5ecd7; /* Cream */
+  --color-neutral: #1a0f05; /* Black */
+  --color-neutral-content: #f5ecd7; /* Cream */
+  --color-base-100: #fffaf2; /* Light Cream */
+  --color-base-200: #f5ecd7; /* Cream */
+  --color-base-300: #d4b896; /* Dark Cream */
+  --color-base-content: #1a0f05; /* Black */
+  --color-info: #68a7c4; /* Ocean Blue */
+  --color-info-content: #112633; /* Dark Blue */
+  --color-success: #4a6741; /* Plant Green */
+  --color-warning: #c1440e; /* Lava Orange */
+  --color-error: #c1440e; /* Lava Orange */
 
   --radius-field: 0.5rem;
   --radius-box: 0.75rem;
@@ -57,23 +91,23 @@
 @plugin "daisyui/theme" {
   name: "dark";
 
-  --color-primary: #4a6741;
-  --color-primary-content: #fffaf2;
-  --color-secondary: #8a7560;
-  --color-secondary-content: #fffaf2;
-  --color-accent: #e05520;
-  --color-accent-content: #fffaf2;
-  --color-neutral: #fffaf2;
-  --color-neutral-content: #0f0a05;
-  --color-base-100: #1e1208;
-  --color-base-200: #0f0a05;
-  --color-base-300: #2e1e10;
-  --color-base-content: #fffaf2;
-  --color-info: #68a7c4;
-  --color-info-content: #112633;
-  --color-success: #4a6741;
-  --color-warning: #e05520;
-  --color-error: #e05520;
+  --color-primary: #79a369; /* Matcha */
+  --color-primary-content: #1a0f05; /* Black */
+  --color-secondary: #d4a373; /* Blonde Roast */
+  --color-secondary-content: #1a0f05; /* Black */
+  --color-accent: #ff763b; /* Magma */
+  --color-accent-content: #1a0f05; /* Black */
+  --color-neutral: #f5ecd7; /* Cream */
+  --color-neutral-content: #3b291a; /* Roast */
+  --color-base-100: #5c442f; /* Light Roast */
+  --color-base-200: #3b291a; /* Roast */
+  --color-base-300: #24180f; /* Dark Roast */
+  --color-base-content: #f5ecd7; /* Cream */
+  --color-info: #8abdd8; /* Baby Blue */
+  --color-info-content: #112633; /* Dark Blue */
+  --color-success: #79a369; /* Matcha */
+  --color-warning: #ff763b; /* Magma */
+  --color-error: #ff763b; /* Magma */
 
   --radius-field: 0.5rem;
   --radius-box: 0.75rem;
@@ -192,7 +226,7 @@
 }
 
 .section-padding {
-  @apply px-8;
+  @apply px-10 py-10;
 }
 
 .input,

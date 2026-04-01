@@ -4,7 +4,7 @@ import { StepType } from "./index";
 import { AnimatePresence, motion } from "framer-motion";
 
 const TimelineLeftSection = ({ activeItem, activeIndex }: { activeItem: StepType; activeIndex: number }) => (
-  <div className="hidden lg:flex flex-1 flex-col justify-center items-start pr-8 md:pr-16 text-left relative min-h-0">
+  <div className="hidden lg:flex flex-1 flex-col justify-center items-start pr-10 md:pr-20 text-left relative min-h-0">
     {/* Desktop Header */}
     <AnimatePresence mode="wait">
       <motion.div

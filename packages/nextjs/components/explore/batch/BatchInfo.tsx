@@ -21,7 +21,7 @@ const BatchInfo = ({ batch, txHashes }: { batch: any; txHashes: BatchTxHashes })
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <div className="flex flex-col gap-8 px-10 pt-10 shrink-0">
+      <div className="flex flex-col gap-8 pb-0 shrink-0">
         <div className="flex items-start justify-between">
           <div>
             <h1 className="heading-hero text-base-content">{batch.batchNumber}</h1>
@@ -57,7 +57,7 @@ const BatchInfo = ({ batch, txHashes }: { batch: any; txHashes: BatchTxHashes })
 
       <div
         ref={scrollContainerRef}
-        className="flex-1 w-full relative overflow-y-auto px-10 pb-10"
+        className="flex-1 w-full relative overflow-y-auto pt-0"
         style={{ scrollbarWidth: "none" }}
       >
         <div className={`flex flex-col gap-8 animate-fadeIn mt-4 ${activeTab === "Overview" ? "block" : "hidden"}`}>

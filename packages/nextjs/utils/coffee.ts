@@ -51,15 +51,15 @@ export const REGIONS: Record<number, string> = {
 };
 
 export const REGION_COLORS: Record<string, string> = {
-  Kona: "#6F4E37", // Coffee Brown
-  "Ka'ū": "#A84632", // Volcanic Red
-  Puna: "#D46A2A", // Lava/Sunset Orange
-  Hamakua: "#4A7856", // Tropical Emerald
-  Maui: "#E2AA46", // Haleakalā Gold
-  Kauai: "#37887E", // Na Pali Teal
-  Molokai: "#9E5D4B", // Red Earth
-  Oahu: "#395E8B", // Pacific Blue
-  Other: "#A3A3A3", // Neutral Cool Gray
+  Kona: "var(--region-kona)",
+  "Ka'ū": "var(--region-kau)",
+  Puna: "var(--region-puna)",
+  Hamakua: "var(--region-hamakua)",
+  Maui: "var(--region-maui)",
+  Kauai: "var(--region-kauai)",
+  Molokai: "var(--region-molokai)",
+  Oahu: "var(--region-oahu)",
+  Other: "var(--region-other)",
 };
 
 export const REGION_TO_ISLAND: Record<number, string> = {
@@ -140,10 +140,25 @@ export const PIPELINE_SEGMENTS = STAGES.map(stage => ({
 }));
 
 export const SCA_TIERS = [
-  { min: 90, label: "Excellent", color: "#4a6741", qualityClass: "text-primary" },
-  { min: 86, label: "Very Good", color: "#4a6741cc", qualityClass: "text-primary" },
-  { min: 82, label: "Good", color: "#4a674199", qualityClass: "text-primary" },
-  { min: 0, label: "Below Specialty", color: "#4a674155", qualityClass: "text-secondary" },
+  { min: 90, label: "Excellent", color: "var(--color-stage-process)", qualityClass: "text-primary" },
+  {
+    min: 86,
+    label: "Very Good",
+    color: "color-mix(in srgb, var(--color-stage-process), transparent 20%)",
+    qualityClass: "text-primary",
+  },
+  {
+    min: 82,
+    label: "Good",
+    color: "color-mix(in srgb, var(--color-stage-process), transparent 40%)",
+    qualityClass: "text-primary",
+  },
+  {
+    min: 0,
+    label: "Below Specialty",
+    color: "color-mix(in srgb, var(--color-stage-process), transparent 66%)",
+    qualityClass: "text-secondary",
+  },
 ] as const;
 
 export const getScaTier = (score: number) => SCA_TIERS.find(t => score >= t.min) ?? SCA_TIERS[SCA_TIERS.length - 1];
