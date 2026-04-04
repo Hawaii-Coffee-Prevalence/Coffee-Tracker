@@ -8,6 +8,7 @@ import { formatDate } from "~~/utils/coffee";
 const BatchOverview = ({ batch }: { batch: any }) => {
   return (
     <>
+      {/* Participant Addresses */}
       <div>
         <div className="text-label text-base! mb-2 mt-2">Chain Participants</div>
         <div className="flex flex-col">
@@ -28,7 +29,7 @@ const BatchOverview = ({ batch }: { batch: any }) => {
           ].map((p: any) => (
             <DataRow key={p.role} title={p.role}>
               {p.address === "Pending" ? (
-                <span className="font-mono text-xs md:text-sm text-base-content/50">Pending</span>
+                <span className="text-hint !text-base">Pending</span>
               ) : (
                 <BlockieAddressLink address={p.address} disableTruncation={true} />
               )}
@@ -37,6 +38,7 @@ const BatchOverview = ({ batch }: { batch: any }) => {
         </div>
       </div>
 
+      {/* Metadata */}
       <div>
         <div className="flex gap-8">
           {[
@@ -52,7 +54,7 @@ const BatchOverview = ({ batch }: { batch: any }) => {
           ].map((item: any) => (
             <div key={item.label} className="flex flex-col gap-1">
               <span className="text-xs font-bold tracking-wide uppercase text-base-content">{item.label}</span>
-              <span className="text-sm font-medium text-base-content/60">{item.value}</span>
+              <span className="text-hint !text-sm !font-medium">{item.value}</span>
             </div>
           ))}
         </div>

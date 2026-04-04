@@ -25,7 +25,7 @@ const RegionChart = ({ data, isLoading }: { data: RegionData; isLoading?: boolea
   if (isLoading) {
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <div className="w-[170px] h-[170px] rounded-full bg-base-300 animate-pulse" />
+        <div className="w-[80%] aspect-square rounded-full bg-base-300 animate-pulse" />
       </div>
     );
   }
@@ -40,8 +40,8 @@ const RegionChart = ({ data, isLoading }: { data: RegionData; isLoading?: boolea
           nameKey="name"
           cx="50%"
           cy="50%"
-          innerRadius={42}
-          outerRadius={84}
+          innerRadius="50%"
+          outerRadius="100%"
           paddingAngle={2}
           stroke="none"
           isAnimationActive={false}

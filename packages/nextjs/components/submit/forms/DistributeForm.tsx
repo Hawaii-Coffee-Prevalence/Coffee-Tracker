@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import BatchSelect from "./BatchSelect";
-import LocationInput from "./LocationInput";
-import MediaPreview from "./MediaPreview";
-import MediaUploader from "./MediaUploader";
+import BatchSelect from "../inputs/BatchSelect";
+import LocationInput from "../inputs/LocationInput";
+import MediaPreview from "../inputs/MediaPreview";
+import MediaUploader from "../inputs/MediaUploader";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useFormFields } from "~~/hooks/useFormFields";
 import { useMediaFiles } from "~~/hooks/useMediaFiles";

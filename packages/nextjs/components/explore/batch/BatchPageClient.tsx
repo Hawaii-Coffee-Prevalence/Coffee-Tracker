@@ -44,7 +44,7 @@ const BatchPageClient = ({ batchNumber }: BatchPageClientProps) => {
             <Skeleton className="absolute inset-0 w-full h-full rounded-3xl" />
           ) : (
             <>
-              <h2 className="text-label mb-3">Media & Certificates</h2>
+              <h2 className="text-label mb-4">Media & Certificates</h2>
               <div className="flex-1 min-h-0">
                 <BatchAlbum batch={batch!} />
               </div>

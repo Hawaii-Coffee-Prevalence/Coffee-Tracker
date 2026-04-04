@@ -29,7 +29,7 @@ const ContractRolesWidget = ({ contractName }: AdminContractProps) => {
   return (
     <div className="flex flex-col p-6 rounded-xl border border-base-300 bg-base-100 shadow-sm">
       <div className="mb-6 last:mb-0">
-        <h4 className="text-sm font-bold tracking-wide uppercase text-base-content/50 mb-4">Roles</h4>
+        <h4 className="text-hint !text-sm font-bold tracking-wide uppercase mb-4">Roles</h4>
 
         <div className="flex flex-col gap-6">
           {roles.map((item, idx) => {

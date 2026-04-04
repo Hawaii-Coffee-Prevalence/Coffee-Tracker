@@ -22,6 +22,7 @@ const BatchInfo = ({ batch, txHashes }: { batch: any; txHashes: BatchTxHashes })
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="flex flex-col gap-8 pb-0 shrink-0">
+        {/* Batch Number, Farm Name, Region + Status */}
         <div className="flex items-start justify-between">
           <div>
             <h1 className="heading-hero text-base-content">{batch.batchNumber}</h1>
@@ -43,6 +44,7 @@ const BatchInfo = ({ batch, txHashes }: { batch: any; txHashes: BatchTxHashes })
           </div>
         </div>
 
+        {/* Cupping Notes */}
         <div>
           <div className="text-label mb-2">Cupping Notes</div>
           <p className="font-serif text-2xl font-light italic text-base-content leading-snug">
@@ -55,6 +57,7 @@ const BatchInfo = ({ batch, txHashes }: { batch: any; txHashes: BatchTxHashes })
         <BatchTabs tabs={["Overview", "Journey", "On Chain"]} activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
+      {/* Responsive Tabs */}
       <div
         ref={scrollContainerRef}
         className="flex-1 w-full relative overflow-y-auto pt-0"

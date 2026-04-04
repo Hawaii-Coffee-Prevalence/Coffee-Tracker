@@ -162,7 +162,7 @@ export const SCA_TIERS = [
     min: 0,
     label: "Below Specialty",
     color: "color-mix(in srgb, var(--color-stage-process), transparent 66%)",
-    qualityClass: "text-secondary",
+    qualityClass: "text-error",
   },
 ] as const;
 

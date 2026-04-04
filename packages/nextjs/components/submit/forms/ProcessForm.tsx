@@ -2,20 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import BatchSelect from "./BatchSelect";
-import LocationInput from "./LocationInput";
-import MediaPreview from "./MediaPreview";
-import MediaUploader from "./MediaUploader";
+import BatchSelect from "../inputs/BatchSelect";
+import LocationInput from "../inputs/LocationInput";
+import MediaPreview from "../inputs/MediaPreview";
+import MediaUploader from "../inputs/MediaUploader";
+import { zeroAddress } from "viem";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useFormFields } from "~~/hooks/useFormFields";
 import { useMediaFiles } from "~~/hooks/useMediaFiles";
-import { ROASTING_METHODS, ROAST_LEVELS, toUnixSeconds } from "~~/utils/coffee";
-import { ROAST_INITIAL_FORM } from "~~/utils/forms";
+import { PROCESSING_METHODS, toUnixSeconds } from "~~/utils/coffee";
+import { PROCESS_INITIAL_FORM } from "~~/utils/forms";
 import { ensureQrCode, fetchMetadata, getOrCreateGroup, mergeGallery, pinJSON, uploadGallery } from "~~/utils/pinata";
 import { notification } from "~~/utils/scaffold-eth";
 
-const RoastForm = () => {
-  const { form, updateField, resetForm: resetFormFields } = useFormFields(ROAST_INITIAL_FORM);
+const ProcessForm = () => {
+  const { form, updateField, resetForm: resetFormFields } = useFormFields(PROCESS_INITIAL_FORM);
   const { mediaFiles, addFiles, updateDescription, removeFile, resetFiles } = useMediaFiles();
   const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
@@ -38,9 +39,11 @@ const RoastForm = () => {
 
     if (
       !form.batchNumber ||
-      !form.cuppingNotes ||
-      !form.roastingDate ||
-      !form.transportTime ||
+      !form.moistureContent ||
+      !form.scaScore ||
+      !form.humidity ||
+      !form.dryTemperature ||
+      !form.processingDate ||
       !form.beforeWeight ||
       !form.afterWeight ||
       !form.latitude ||
@@ -52,22 +55,39 @@ const RoastForm = () => {
 
     if (!batchData) return;
 
-    const transportTime = Number(form.transportTime);
+    if (batchData.processor !== zeroAddress) {
+      notification.warning("This batch already has a processor assigned!");
+    }
+
+    const moistureContent = Number(form.moistureContent);
+    const scaScore = Number(form.scaScore);
+    const humidity = Number(form.humidity);
+    const dryTemperature = Number(form.dryTemperature);
     const beforeWeight = Number(form.beforeWeight);
     const afterWeight = Number(form.afterWeight);
     const latitude = Number(form.latitude);
     const longitude = Number(form.longitude);
-    const roastingDate = toUnixSeconds(form.roastingDate);
+    const processingDate = toUnixSeconds(form.processingDate);
 
     if (
-      [transportTime, beforeWeight, afterWeight, latitude, longitude, roastingDate].some(value => Number.isNaN(value))
+      [
+        moistureContent,
+        scaScore,
+        humidity,
+        dryTemperature,
+        beforeWeight,
+        afterWeight,
+        latitude,
+        longitude,
+        processingDate,
+      ].some(value => Number.isNaN(value))
     ) {
       notification.error("Check the numeric fields. One or more values are invalid.");
       return;
     }
 
     setIsUploading(true);
-    const notificationId = notification.loading("Adding roasting data and pinning to IPFS...");
+    const notificationId = notification.loading("Adding processing data and pinning to IPFS...");
     let newMetadataCID = "";
 
     try {
@@ -77,16 +97,21 @@ const RoastForm = () => {
 
       await ensureQrCode(metadata, batchData.batchNumber);
 
-      // Merge roasting data
-      metadata.attributes.push({ trait_type: "Stage", value: "Roasted" });
-      metadata.attributes.push({ trait_type: "Roast Level", value: ROAST_LEVELS[Number(form.roastLevel)] });
+      // Merge processing data
+      metadata.attributes.push({ trait_type: "Stage", value: "Processed" });
+      metadata.attributes.push({
+        trait_type: "Processing Method",
+        value: PROCESSING_METHODS[Number(form.processingMethod)],
+      });
+      metadata.attributes.push({ trait_type: "SCA Score", value: scaScore });
 
-      metadata.properties.roasting = {
-        roastingMethod: ROASTING_METHODS[Number(form.roastingMethod)],
-        roastLevel: ROAST_LEVELS[Number(form.roastLevel)],
-        cuppingNotes: form.cuppingNotes.trim(),
-        roastingDate,
-        transportTime,
+      metadata.properties.processing = {
+        processingMethod: PROCESSING_METHODS[Number(form.processingMethod)],
+        moistureContent,
+        scaScore,
+        humidity,
+        dryTemperature,
+        processingDate,
         beforeWeight,
         afterWeight,
         location: { latitude, longitude },
@@ -108,12 +133,12 @@ const RoastForm = () => {
     try {
       await writeContractAsync(
         {
-          functionName: "roastBatch",
-          args: [batchData.batchId, Number(form.roastingMethod), Number(form.roastLevel), newMetadataCID],
+          functionName: "processBatch",
+          args: [batchData.batchId, Number(form.processingMethod), newMetadataCID],
         },
         {
           onBlockConfirmation: () => {
-            notification.success(`Batch ${form.batchNumber.trim()} was roasted onchain.`);
+            notification.success(`Batch ${form.batchNumber.trim()} was processed onchain.`);
             resetForm();
             setTimeout(() => {
               router.push("/explore");
@@ -134,8 +159,8 @@ const RoastForm = () => {
     <form onSubmit={handleSubmit} className="rounded-xl border border-base-300 bg-base-100 shadow-sm">
       {/* Header */}
       <div className="p-6 border-b border-base-300">
-        <h2 className="heading-card text-4xl mb-2">Roast Batch</h2>
-        <p className="text-muted text-sm m-0">Enter the roasting data to update a batch.</p>
+        <h2 className="heading-card text-4xl mb-2">Process Batch</h2>
+        <p className="text-muted text-sm m-0">Enter the processing data to update a batch.</p>
       </div>
 
       <div className="p-6">
@@ -146,20 +171,20 @@ const RoastForm = () => {
             <BatchSelect
               value={form.batchNumber}
               onSelect={val => updateField("batchNumber", val)}
-              requiredStage="Processed"
+              requiredStage="Harvested"
               isDisabled={isDisabled}
             />
           </div>
 
           {/* Row 1, Col 2 */}
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-label">Roasting Method</span>
+            <span className="text-label">Processing Method</span>
             <select
               className="select select-bordered w-full text-sm h-10"
-              value={form.roastingMethod}
-              onChange={e => updateField("roastingMethod", e.target.value)}
+              value={form.processingMethod}
+              onChange={e => updateField("processingMethod", e.target.value)}
             >
-              {Object.entries(ROASTING_METHODS).map(([value, label]) => (
+              {Object.entries(PROCESSING_METHODS).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
                 </option>
@@ -180,42 +205,59 @@ const RoastForm = () => {
             </div>
           </div>
 
-          {/* Row 2, Col 1 — Spans 2 Rows */}
-          <div className="flex flex-col gap-2 w-full md:row-span-2 h-full">
-            <span className="text-label">Cupping Notes</span>
-            <textarea
-              className="textarea textarea-bordered w-full text-sm resize-none flex-grow"
-              placeholder="Milk chocolate, roasted macadamia nut, brown sugar, hints of tropical fruit"
-              value={form.cuppingNotes}
-              onChange={e => updateField("cuppingNotes", e.target.value)}
+          {/* Row 2, Col 1 */}
+          <div className="flex flex-col gap-2 w-full">
+            <span className="text-label">SCA Score</span>
+            <input
+              className="input input-bordered w-full text-sm h-10"
+              inputMode="decimal"
+              placeholder="86.5"
+              step="0.1"
+              min="0"
+              max="100"
+              type="number"
+              value={form.scaScore}
+              onChange={e => updateField("scaScore", e.target.value)}
             />
           </div>
 
           {/* Row 2, Col 2 */}
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-label">Roasting Date</span>
+            <span className="text-label">Processing Date</span>
             <input
               className="input input-bordered w-full text-sm h-10"
               type="date"
-              value={form.roastingDate}
-              onChange={e => updateField("roastingDate", e.target.value)}
+              value={form.processingDate}
+              onChange={e => updateField("processingDate", e.target.value)}
+            />
+          </div>
+
+          {/* Row 3, Col 1 */}
+          <div className="flex flex-col gap-2 w-full">
+            <span className="text-label">Humidity (%)</span>
+            <input
+              className="input input-bordered w-full text-sm h-10"
+              inputMode="decimal"
+              placeholder="72"
+              step="0.1"
+              type="number"
+              value={form.humidity}
+              onChange={e => updateField("humidity", e.target.value)}
             />
           </div>
 
           {/* Row 3, Col 2 */}
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-label">Roast Level</span>
-            <select
-              className="select select-bordered w-full text-sm h-10"
-              value={form.roastLevel}
-              onChange={e => updateField("roastLevel", e.target.value)}
-            >
-              {Object.entries(ROAST_LEVELS).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
+            <span className="text-label">Dry Temperature (°C)</span>
+            <input
+              className="input input-bordered w-full text-sm h-10"
+              inputMode="decimal"
+              placeholder="28.5"
+              step="0.1"
+              type="number"
+              value={form.dryTemperature}
+              onChange={e => updateField("dryTemperature", e.target.value)}
+            />
           </div>
 
           {/* Row 4, Col 1 */}
@@ -224,8 +266,8 @@ const RoastForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
-              placeholder="272"
               min="0"
+              placeholder="1360"
               type="number"
               value={form.beforeWeight}
               onChange={e => updateField("beforeWeight", e.target.value)}
@@ -234,15 +276,15 @@ const RoastForm = () => {
 
           {/* Row 4, Col 2 */}
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-label">Transport Time (days)</span>
+            <span className="text-label">Moisture Content (%)</span>
             <input
               className="input input-bordered w-full text-sm h-10"
-              inputMode="numeric"
-              placeholder="3"
-              min="0"
+              inputMode="decimal"
+              placeholder="11.2"
+              step="0.1"
               type="number"
-              value={form.transportTime}
-              onChange={e => updateField("transportTime", e.target.value)}
+              value={form.moistureContent}
+              onChange={e => updateField("moistureContent", e.target.value)}
             />
           </div>
 
@@ -252,8 +294,8 @@ const RoastForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
-              placeholder="233"
               min="0"
+              placeholder="272"
               type="number"
               value={form.afterWeight}
               onChange={e => updateField("afterWeight", e.target.value)}
@@ -266,8 +308,8 @@ const RoastForm = () => {
             longitude={form.longitude}
             onChange={updateField}
             disabled={isDisabled}
-            latPlaceholder="19.636820"
-            longPlaceholder="-155.993450"
+            latPlaceholder="19.521480"
+            longPlaceholder="-155.907250"
           />
         </div>
       </div>
@@ -293,7 +335,7 @@ const RoastForm = () => {
             className="btn btn-primary flex-1 text-base tracking-wide whitespace-nowrap"
             disabled={isDisabled || !batchData || (batchData?.batchId ?? 0n) === 0n}
           >
-            {isUploading ? "Uploading..." : isMining ? "Submitting..." : "Roast Batch"}
+            {isUploading ? "Uploading..." : isMining ? "Submitting..." : "Process Batch"}
           </button>
         </div>
       </div>
@@ -301,4 +343,4 @@ const RoastForm = () => {
   );
 };
 
-export default RoastForm;
+export default ProcessForm;

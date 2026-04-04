@@ -31,18 +31,18 @@ const BatchAlbum = ({ batch }: { batch: any }) => {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col h-full items-center justify-center gap-3 text-base-content/30">
+      <div className="flex flex-col h-full gap-4 items-center justify-center text-hint">
         <span className="text-sm">No media available</span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full gap-3">
+    <div className="flex flex-col h-full gap-4">
       <div className="flex-1 flex flex-col items-center justify-center gap-2 min-h-0">
         <span className="text-hint text-xs text-center">{items[currentIndex]?.label || ""}</span>
 
-        <div className="relative w-full flex-1 min-h-0 rounded-2xl overflow-hidden bg-base-200">
+        <div className="relative w-full flex-1 min-h-0 rounded-2xl overflow-hidden">
           {items.map((item, i) => (
             <div
               key={i}

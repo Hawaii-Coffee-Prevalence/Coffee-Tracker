@@ -13,8 +13,8 @@ const DataDashboard = () => {
       value: transactionCount?.toString(),
       trend: stats?.batchesToday ? "up" : "neutral",
       sub: stats?.batchesToday ? (
-        <span className="inline-flex items-center gap-1">
-          <ArrowUpIcon className="w-3 h-3" />
+        <span className="inline-flex items-center gap-2">
+          <ArrowUpIcon className="w-4 h-4" />
           {stats.batchesToday} today
         </span>
       ) : (
@@ -26,8 +26,8 @@ const DataDashboard = () => {
       value: stats?.totalBatches?.toString(),
       trend: stats?.batchesThisWeek ? "up" : "neutral",
       sub: stats?.batchesThisWeek ? (
-        <span className="inline-flex items-center gap-1">
-          <ArrowUpIcon className="w-3 h-3" />
+        <span className="inline-flex items-center gap-2">
+          <ArrowUpIcon className="w-4 h-4" />
           {stats.batchesThisWeek} this week
         </span>
       ) : (
@@ -61,28 +61,27 @@ const DataDashboard = () => {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 min-h-[150px] gap-px bg-base-300 border border-base-300 rounded-xl overflow-hidden shadow-sm mb-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-base-300 border border-base-300 rounded-xl overflow-hidden shadow-sm mb-6">
       {statItems.map(({ label, value, sub, trend }) => (
-        <div key={label} className="card-surface p-6 transition-colors flex flex-col h-full gap-4">
+        <div key={label} className="card-surface p-6 transition-colors flex flex-col justify-between h-full">
           {isLoading ? (
             <>
               <div className="shrink-0">
                 <Skeleton className="h-4 w-16" />
               </div>
-              <div className="flex-1 flex flex-col justify-center">
+              <div className="flex flex-col justify-end">
                 <Skeleton className="h-10 w-20 mb-2" />
-                <Skeleton className="h-3 w-16" />
+                <Skeleton className="h-4 w-16" />
               </div>
             </>
           ) : (
             <>
-              <div className="text-hint uppercase tracking-widest shrink-0">{label}</div>
-              <div className="flex-1 flex flex-col justify-center">
-                <div className="font-serif text-3xl xl:text-5xl font-light text-base-content leading-none mb-1">
-                  {value ?? "—"}
-                </div>
+              <div className="text-label text-muted">{label}</div>
+
+              <div>
+                <div className="font-serif text-5xl font-light text-base-content leading-none">{value ?? "—"}</div>
                 <p
-                  className={`text-xs mt-2 ${trend === "up" ? "text-primary" : trend === "down" ? "text-accent" : "text-muted"}`}
+                  className={`text-xs mt-2 mb-0 ${trend === "up" ? "text-primary" : trend === "down" ? "text-accent" : "text-muted"}`}
                 >
                   {sub}
                 </p>

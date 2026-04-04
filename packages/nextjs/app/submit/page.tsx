@@ -4,11 +4,11 @@ import { useState } from "react";
 import type { NextPage } from "next";
 import RoleClient from "~~/components/RoleClient";
 import AdminRoleSelector from "~~/components/submit/AdminRoleSelector";
-import DistributeForm from "~~/components/submit/DistributeForm";
-import HarvestForm from "~~/components/submit/HarvestForm";
-import ProcessForm from "~~/components/submit/ProcessForm";
-import RoastForm from "~~/components/submit/RoastForm";
 import StatusDashboard from "~~/components/submit/StatusDashboard";
+import DistributeForm from "~~/components/submit/forms/DistributeForm";
+import HarvestForm from "~~/components/submit/forms/HarvestForm";
+import ProcessForm from "~~/components/submit/forms/ProcessForm";
+import RoastForm from "~~/components/submit/forms/RoastForm";
 import { useRoleProtection } from "~~/hooks/useRoleProtection";
 
 const SubmitPage: NextPage = () => {

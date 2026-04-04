@@ -18,8 +18,8 @@ export const AdminRoleDropdown = ({ value, onChange, options = [] }: any) => (
       onChange={e => onChange(e.target.value)}
       className="select w-full bg-transparent px-4 h-10 text-base-content placeholder:text-base-content/50 outline-none text-sm cursor-pointer pr-8 border-none rounded-none focus:outline-none focus:ring-0 focus:border-transparent focus-within:outline-none focus:shadow-none"
     >
-      {options.map((r: any) => (
-        <option key={r.value?.toString()} value={r.value?.toString()}>
+      {options.map((r: any, index: number) => (
+        <option key={r.value?.toString() || index} value={r.value?.toString()}>
           {r.label}
         </option>
       ))}

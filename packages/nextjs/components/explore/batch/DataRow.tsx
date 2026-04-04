@@ -16,7 +16,7 @@ const DataRow = ({
   const content = value ?? children;
   return (
     <div
-      className={`flex justify-between py-2.5 border-base-300 ${itemsStart ? "items-start" : "items-center"} ${
+      className={`flex justify-between py-2 border-base-300 ${itemsStart ? "items-start" : "items-center"} ${
         hasBorder ? "border-b border-base-300" : ""
       }`}
     >
@@ -27,7 +27,7 @@ const DataRow = ({
       >
         {title}
       </span>
-      <div className="flex-1 px-3 font-medium text-md text-base-content/80 text-left">{content}</div>
+      <div className="flex-1 px-4 font-medium text-md text-base-content/80 text-left">{content}</div>
     </div>
   );
 };
