@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useContractRoles } from "~~/hooks/useAdminPanel";
 import { AdminContractProps } from "~~/types/admin";
 import { truncateAddress } from "~~/utils/coffee";
+import { copyWithFeedback } from "~~/utils/forms";
 
 const ContractRolesWidget = ({ contractName }: AdminContractProps) => {
   const [copied, setCopied] = useState<number | null>(null);
@@ -15,22 +16,19 @@ const ContractRolesWidget = ({ contractName }: AdminContractProps) => {
     /* Copy Address Tooltip */
   }
   const handleCopy = (value: string, idx: number) => {
-    if (typeof window !== "undefined") {
-      navigator.clipboard.writeText(value);
-      setCopied(idx);
-      setShowCopiedText(idx);
-      setTimeout(() => {
-        setCopied(null);
-        setTimeout(() => setShowCopiedText(null), 500);
-      }, 2000);
-    }
+    copyWithFeedback({
+      value,
+      showValue: idx,
+      clearValue: null,
+      setCopied,
+      setShowCopiedText,
+    });
   };
 
   return (
     <div className="flex flex-col p-6 rounded-xl border border-base-300 bg-base-100 shadow-sm">
       <div className="mb-6 last:mb-0">
-        <h4 className="text-hint !text-sm font-bold tracking-wide uppercase mb-4">Roles</h4>
-
+        <div className="text-label text-base! mb-4">Roles</div>
         <div className="flex flex-col gap-6">
           {roles.map((item, idx) => {
             const val = item.value?.toString() ?? "";

@@ -2,7 +2,6 @@
 
 // @refresh reset
 import { AddressInfoDropdown } from "./AddressInfoDropdown";
-import { AddressQRCodeModal } from "./AddressQRCodeModal";
 import { RevealBurnerPKModal } from "./RevealBurnerPKModal";
 import { WrongNetworkDropdown } from "./WrongNetworkDropdown";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -51,7 +50,6 @@ export const RainbowKitCustomConnectButton = () => {
                     ensAvatar={account.ensAvatar}
                     blockExplorerAddressLink={blockExplorerAddressLink}
                   />
-                  <AddressQRCodeModal address={account.address as Address} modalId="qrcode-modal" />
                   <RevealBurnerPKModal />
                 </>
               );

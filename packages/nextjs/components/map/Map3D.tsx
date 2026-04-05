@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import MapLegend from "./MapLegend";
 import MapMarker from "./MapMarker";
 import { LngLatBounds } from "maplibre-gl";
 import MapGL, { MapRef, NavigationControl as NavControl } from "react-map-gl/maplibre";
 import Skeleton from "~~/components/Skeleton";
 import { CoffeeBatch, Coordinates } from "~~/types/batch";
-import { STAGES, STAGE_COLORS } from "~~/utils/coffee";
 
 const Map = MapGL as any;
 const NavigationControl = NavControl as any;
@@ -56,26 +56,6 @@ const getMarkerCoordinates = (batch: CoffeeBatch, showJourney: boolean): Coordin
   return [];
 };
 
-const MapLegend = () => {
-  const labels: Record<string, string> = {
-    Harvested: "Coffee Farm",
-    Processed: "Processing Station",
-    Roasted: "Roasting Facility",
-    Distributed: "Distribution Hub",
-  };
-
-  return (
-    <div className="absolute bottom-4 left-4 z-10 bg-base-100 border border-base-300 rounded-lg px-4 py-2 flex flex-col gap-2 shadow-sm pointer-events-none">
-      {STAGES.map(stage => (
-        <div key={stage} className="flex items-center gap-2 text-xs text-muted">
-          <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: STAGE_COLORS[stage] }} />
-          {labels[stage]}
-        </div>
-      ))}
-    </div>
-  );
-};
-
 const Map3D = ({
   className,
   batches,
@@ -120,9 +100,12 @@ const Map3D = ({
     allCoords.forEach(c => bounds.extend([c.longitude, c.latitude]));
 
     setTimeout(() => {
+      const container = containerRef.current?.getBoundingClientRect();
+      const paddingValue = container ? Math.max(60, Math.min(140, Math.round(container.width * 0.12))) : 100;
+
       map.fitBounds(bounds.toArray() as [[number, number], [number, number]], {
-        padding: { top: 100, bottom: 100, left: 100, right: 100 },
-        maxZoom: 15,
+        padding: { top: paddingValue, bottom: paddingValue, left: paddingValue, right: paddingValue },
+        maxZoom: 12,
         duration: 1000,
       });
       hasFittedMap.current = true;

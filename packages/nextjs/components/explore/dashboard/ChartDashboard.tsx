@@ -60,7 +60,7 @@ const PipelineCard = ({ stats, isLoading }: CardProps) => {
   return (
     <div className="card-surface hover:!bg-base-100 p-6 flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-2">
         <div className="text-label text-muted">Supply Chain Pipeline</div>
         <div className="text-muted text-xs">{isLoading ? "—" : (stats?.totalBatches ?? "—")} batches</div>
       </div>
@@ -120,7 +120,7 @@ const RegionCard = ({ stats, isLoading }: CardProps) => {
   return (
     <div className="card-surface hover:!bg-base-100 p-6 flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-2">
         <div className="text-label text-muted">Batches By Region</div>
         <div className="text-muted text-xs">{stats?.regionCounters?.length ?? "—"} regions</div>
       </div>
@@ -157,7 +157,7 @@ const ScaLegend = ({ stats }: { stats: Stats | null }) => (
 const ScaCard = ({ stats, isLoading }: CardProps) => (
   <div className="card-surface hover:!bg-base-100 p-6 flex flex-col h-full">
     {/* Header */}
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between mb-2">
       <div className="text-label text-muted">SCA Score Distribution</div>
       <div className="text-muted text-xs">Specialty ≥ 80</div>
     </div>
