@@ -211,7 +211,7 @@ const ProcessForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="decimal"
-              placeholder="86.5"
+              placeholder="e.g. 86.5"
               step="0.1"
               min="0"
               max="100"
@@ -238,7 +238,7 @@ const ProcessForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="decimal"
-              placeholder="72"
+              placeholder="e.g. 72.0"
               step="0.1"
               type="number"
               value={form.humidity}
@@ -252,7 +252,7 @@ const ProcessForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="decimal"
-              placeholder="28.5"
+              placeholder="e.g. 28.5"
               step="0.1"
               type="number"
               value={form.dryTemperature}
@@ -267,7 +267,7 @@ const ProcessForm = () => {
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
               min="0"
-              placeholder="1360"
+              placeholder="e.g. 1360"
               type="number"
               value={form.beforeWeight}
               onChange={e => updateField("beforeWeight", e.target.value)}
@@ -280,7 +280,7 @@ const ProcessForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="decimal"
-              placeholder="11.2"
+              placeholder="e.g. 11.2"
               step="0.1"
               type="number"
               value={form.moistureContent}
@@ -295,7 +295,7 @@ const ProcessForm = () => {
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
               min="0"
-              placeholder="272"
+              placeholder="e.g. 272"
               type="number"
               value={form.afterWeight}
               onChange={e => updateField("afterWeight", e.target.value)}
@@ -308,8 +308,8 @@ const ProcessForm = () => {
             longitude={form.longitude}
             onChange={updateField}
             disabled={isDisabled}
-            latPlaceholder="19.521480"
-            longPlaceholder="-155.907250"
+            latPlaceholder="e.g. 19.521480"
+            longPlaceholder="e.g. -155.907250"
           />
         </div>
       </div>

@@ -42,7 +42,6 @@ const SubmitPage: NextPage = () => {
     <RoleClient allowedRoles={allowedRoles}>
       <div className="w-full min-h-[calc(100vh-4rem)] bg-base-200">
         <section className="max-w-7xl mx-auto flex flex-col section-padding">
-          {/* Admin Role Selector */}
           <AdminRoleSelector userRole={userRole} activeFormTab={activeFormTab} setActiveFormTab={setActiveFormTab} />
 
           {/* Status Dashboard */}

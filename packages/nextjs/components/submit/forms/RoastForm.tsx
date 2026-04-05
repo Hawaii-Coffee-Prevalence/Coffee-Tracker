@@ -185,7 +185,7 @@ const RoastForm = () => {
             <span className="text-label">Cupping Notes</span>
             <textarea
               className="textarea textarea-bordered w-full text-sm resize-none flex-grow"
-              placeholder="Milk chocolate, roasted macadamia nut, brown sugar, hints of tropical fruit"
+              placeholder="e.g. milk chocolate, brown sugar, citrus"
               value={form.cuppingNotes}
               onChange={e => updateField("cuppingNotes", e.target.value)}
             />
@@ -224,7 +224,7 @@ const RoastForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
-              placeholder="272"
+              placeholder="e.g. 272"
               min="0"
               type="number"
               value={form.beforeWeight}
@@ -238,7 +238,7 @@ const RoastForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
-              placeholder="3"
+              placeholder="e.g. 3"
               min="0"
               type="number"
               value={form.transportTime}
@@ -252,7 +252,7 @@ const RoastForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
-              placeholder="233"
+              placeholder="e.g. 233"
               min="0"
               type="number"
               value={form.afterWeight}
@@ -266,8 +266,8 @@ const RoastForm = () => {
             longitude={form.longitude}
             onChange={updateField}
             disabled={isDisabled}
-            latPlaceholder="19.636820"
-            longPlaceholder="-155.993450"
+            latPlaceholder="e.g. 19.636820"
+            longPlaceholder="e.g. -155.993450"
           />
         </div>
       </div>

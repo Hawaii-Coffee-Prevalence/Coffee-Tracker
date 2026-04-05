@@ -23,8 +23,8 @@ const LocationInput = ({
   longitude,
   onChange,
   disabled,
-  latPlaceholder = "19.681101",
-  longPlaceholder = "-155.980404",
+  latPlaceholder = "e.g. 19.681101",
+  longPlaceholder = "e.g. -155.980404",
 }: LocationInputProps) => {
   const [mode, setMode] = useState<"latlng" | "tmk">("tmk");
   const [tmkValue, setTMKValue] = useState("");
@@ -37,7 +37,7 @@ const LocationInput = ({
   useEffect(() => {
     if (!isLookupReady(debouncedTMK)) {
       setTmkStatus(debouncedTMK.length > 0 ? "invalid" : "none");
-      setTmkMessage(debouncedTMK.length > 0 ? "Need Island-Zone-Section-Plat-Parcel Format!" : "");
+      setTmkMessage(debouncedTMK.length > 0 ? "e.g. 3-7-4-007-090" : "");
       return;
     }
 
@@ -136,7 +136,7 @@ const LocationInput = ({
               className={`input input-bordered w-full text-sm h-10 pr-10 font-mono tracking-wider transition-colors ${
                 tmkStatus === "valid" ? "input-success" : tmkStatus === "invalid" ? "input-error" : ""
               }`}
-              placeholder="3-7-4-007-090"
+              placeholder="e.g. 3-7-4-007-090"
               value={tmkValue}
               onChange={handleTMKChange}
               disabled={disabled}

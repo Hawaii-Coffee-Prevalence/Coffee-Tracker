@@ -69,7 +69,7 @@ const BatchSelect = ({ value, onSelect, requiredStage, isDisabled }: BatchSelect
         className={`input input-bordered w-full text-sm h-10 pr-10 transition-colors ${
           status === "valid" ? "input-success" : status === "invalid" ? "input-error" : ""
         }`}
-        placeholder={`Enter ${requiredStage} batch ID...`}
+        placeholder="e.g. KONA-2026-201"
         value={value}
         onChange={e => onSelect(e.target.value)}
         disabled={isDisabled}

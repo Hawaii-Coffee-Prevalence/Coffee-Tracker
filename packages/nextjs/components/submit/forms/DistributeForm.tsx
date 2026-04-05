@@ -148,7 +148,7 @@ const DistributeForm = () => {
             <span className="text-label">Destination</span>
             <input
               className="input input-bordered w-full text-sm h-10"
-              placeholder="Kailua-Kona Cafe"
+              placeholder="e.g. Kailua-Kona Cafe"
               value={form.destination}
               onChange={e => updateField("destination", e.target.value)}
             />
@@ -173,7 +173,7 @@ const DistributeForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
-              placeholder="233"
+              placeholder="e.g. 233"
               min="0"
               type="number"
               value={form.distributionWeight}
@@ -198,7 +198,7 @@ const DistributeForm = () => {
             <input
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
-              placeholder="25"
+              placeholder="e.g. 25"
               min="0"
               type="number"
               value={form.bagCount}
@@ -212,8 +212,8 @@ const DistributeForm = () => {
             longitude={form.longitude}
             onChange={updateField}
             disabled={isDisabled}
-            latPlaceholder="19.641720"
-            longPlaceholder="-155.996480"
+            latPlaceholder="e.g. 19.641720"
+            longPlaceholder="e.g. -155.996480"
           />
         </div>
       </div>

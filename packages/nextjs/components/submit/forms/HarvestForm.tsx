@@ -149,7 +149,7 @@ const HarvestForm = () => {
             <span className="text-label">Batch Number</span>
             <input
               className="input input-bordered w-full text-sm h-10"
-              placeholder="KONA-2026-201"
+              placeholder="e.g. KONA-2026-201"
               value={form.batchNumber}
               onChange={e => updateField("batchNumber", e.target.value)}
             />
@@ -160,7 +160,7 @@ const HarvestForm = () => {
             <span className="text-label">Farm Name</span>
             <input
               className="input input-bordered w-full text-sm h-10"
-              placeholder="Holualoa Kona Coffee Co"
+              placeholder="e.g. Holualoa Kona Coffee Co"
               value={form.farmName}
               onChange={e => updateField("farmName", e.target.value)}
             />
@@ -229,7 +229,7 @@ const HarvestForm = () => {
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
               min="0"
-              placeholder="1360"
+              placeholder="e.g. 1360"
               type="number"
               value={form.harvestWeight}
               onChange={e => updateField("harvestWeight", e.target.value)}
@@ -243,7 +243,7 @@ const HarvestForm = () => {
               className="input input-bordered w-full text-sm h-10"
               inputMode="numeric"
               min="0"
-              placeholder="670"
+              placeholder="e.g. 670"
               type="number"
               value={form.elevation}
               onChange={e => updateField("elevation", e.target.value)}
@@ -256,6 +256,8 @@ const HarvestForm = () => {
             longitude={form.longitude}
             onChange={updateField}
             disabled={isDisabled}
+            latPlaceholder="e.g. 19.681101"
+            longPlaceholder="e.g. -155.980404"
           />
         </div>
       </div>
