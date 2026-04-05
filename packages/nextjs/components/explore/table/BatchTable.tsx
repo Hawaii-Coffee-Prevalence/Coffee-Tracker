@@ -35,7 +35,7 @@ const BatchTable = ({ batches, isLoading = false, txHashMap, pagination }: Batch
               <BatchSkeletonRows />
             ) : rows.length === 0 ? (
               <tr>
-                <td colSpan={8} className="p-42 text-center text-sm text-muted">
+                <td colSpan={8} className="p-10 text-center text-sm text-muted">
                   No batches found
                 </td>
               </tr>

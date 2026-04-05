@@ -48,3 +48,32 @@ export const DISTRIBUTE_INITIAL_FORM: DistributeFormState = {
   latitude: "",
   longitude: "",
 };
+
+type CopyFeedbackOptions<T> = {
+  value: string;
+  showValue: T;
+  clearValue: T;
+  setShowCopiedText: (value: T) => void;
+  setCopied?: (value: T) => void;
+  resetDelayMs?: number;
+  hideDelayMs?: number;
+};
+
+export const copyWithFeedback = <T>({
+  value,
+  showValue,
+  clearValue,
+  setShowCopiedText,
+  setCopied,
+  resetDelayMs = 2000,
+  hideDelayMs = 500,
+}: CopyFeedbackOptions<T>) => {
+  if (typeof window === "undefined" || !navigator?.clipboard) return;
+  navigator.clipboard.writeText(value);
+  setCopied?.(showValue);
+  setShowCopiedText(showValue);
+  setTimeout(() => {
+    setCopied?.(clearValue);
+    setTimeout(() => setShowCopiedText(clearValue), hideDelayMs);
+  }, resetDelayMs);
+};

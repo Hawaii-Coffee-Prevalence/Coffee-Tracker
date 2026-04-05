@@ -5,7 +5,7 @@ import { ResultData } from "~~/types/admin";
 
 export const AdminFunctionSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="mb-6 last:mb-0">
-    <h4 className="text-hint !text-sm font-bold tracking-wide uppercase mb-4">{title}</h4>
+    <div className="text-label text-base! mb-4">{title}</div>
     <div className="flex flex-col gap-6">{children}</div>
   </div>
 );

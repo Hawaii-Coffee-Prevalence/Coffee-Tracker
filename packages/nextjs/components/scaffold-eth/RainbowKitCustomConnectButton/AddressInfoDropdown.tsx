@@ -8,6 +8,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 import { truncateAddress } from "~~/utils/coffee";
+import { copyWithFeedback } from "~~/utils/forms";
 import { isENS } from "~~/utils/scaffold-eth/common";
 
 type AddressInfoDropdownProps = {
@@ -21,6 +22,7 @@ export const AddressInfoDropdown = ({ address, ensAvatar, displayName }: Address
   const { disconnect } = useDisconnect();
   const checkSumAddress = getAddress(address);
   const [selectingNetwork, setSelectingNetwork] = useState(false);
+  const [showCopiedText, setShowCopiedText] = useState(false);
   const dropdownRef = useRef<HTMLDetailsElement>(null);
 
   const closeDropdown = () => {
@@ -29,6 +31,15 @@ export const AddressInfoDropdown = ({ address, ensAvatar, displayName }: Address
   };
 
   useOutsideClick(dropdownRef, closeDropdown);
+
+  const handleCopy = (value: string) => {
+    copyWithFeedback({
+      value,
+      showValue: true,
+      clearValue: false,
+      setShowCopiedText,
+    });
+  };
 
   return (
     <>
@@ -49,7 +60,7 @@ export const AddressInfoDropdown = ({ address, ensAvatar, displayName }: Address
           <li className={selectingNetwork ? "hidden" : ""}>
             <Link
               href="/profile"
-              className="h-8 btn-sm rounded-xl! flex gap-3 py-3 cursor-pointer"
+              className="h-8 btn-sm rounded-xl! flex gap-3 py-3 text-base-content bg-transparent hover:bg-base-200 active:!bg-base-200 active:!text-base-content"
               onClick={closeDropdown}
             >
               <span className="whitespace-nowrap">Profile</span>
@@ -57,14 +68,20 @@ export const AddressInfoDropdown = ({ address, ensAvatar, displayName }: Address
           </li>
 
           <li className={selectingNetwork ? "hidden" : ""}>
-            <label htmlFor="qrcode-modal" className="h-8 btn-sm rounded-xl! flex gap-3 py-3">
-              <span className="whitespace-nowrap">View Address</span>
-            </label>
+            <button
+              type="button"
+              className="h-8 btn-sm rounded-xl! flex gap-3 py-3 text-base-content bg-transparent hover:bg-base-200 active:!bg-base-200 active:!text-base-content"
+              onClick={() => handleCopy(checkSumAddress)}
+            >
+              <span className="whitespace-nowrap transition-opacity duration-200">
+                {showCopiedText ? "Copied!" : "Copy Address"}
+              </span>
+            </button>
           </li>
 
           <li className={selectingNetwork ? "hidden" : ""}>
             <button
-              className="menu-item text-error h-8 btn-sm rounded-xl! flex gap-3 py-3"
+              className="h-8 btn-sm rounded-xl! flex gap-3 py-3 text-error bg-transparent hover:bg-base-200 active:!bg-base-200 active:!text-base-content"
               type="button"
               onClick={() => disconnect()}
             >

@@ -36,7 +36,7 @@ const TimelineSpine = ({
         return (
           <div
             key={index}
-            className={`absolute w-15 h-15 flex items-center justify-center rounded-full border-2 z-10 transition-colors duration-300 shadow-md ${dotColorClass}`}
+            className={`absolute w-15 h-15 flex items-center justify-center rounded-full border-2 z-10 transition-colors duration-200 shadow-md ${dotColorClass}`}
             style={{
               top: `${nodePosition}%`,
               left: "50%",

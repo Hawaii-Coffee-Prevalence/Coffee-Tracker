@@ -29,7 +29,8 @@ const HeroSection = ({ onOpenQr }: Props) => {
       <p className="text-muted text-base font-light leading-relaxed max-w-md mb-10 text-center mx-auto">
         Transparent provenance secured on the blockchain.
         <br />
-        Decentralized tracking verifies the authentic island roots and complete physical history of every coffee batch.
+        Use decentralized tracking to verify the authentic island roots and complete physical history of every coffee
+        batch.
       </p>
 
       <div className="flex flex-row w-full max-w-md justify-center gap-3 mb-5 mx-auto">
