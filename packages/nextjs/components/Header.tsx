@@ -48,11 +48,11 @@ export const HeaderMenuLinks = () => {
 
   useEffect(() => {
     if (userRole) setCachedRole(userRole);
-  }, [userRole]);
+  }, [userRole, setCachedRole]);
 
   useEffect(() => {
     if (!address) setCachedRole(null);
-  }, [address]);
+  }, [address, setCachedRole]);
 
   const displayRole = userRole ?? cachedRole;
 
