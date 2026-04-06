@@ -1505,7 +1505,7 @@ const deployedContracts = {
   },
   84532: {
     CoffeeTracker: {
-      address: "0x3FE2E5291A505547668e02157F17764E397Df1bc",
+      address: "0x5214aC73285D0ae8db22dF2ed9215DCaed647991",
       abi: [
         {
           inputs: [],
@@ -2998,7 +2998,7 @@ const deployedContracts = {
         renounceRole: "@openzeppelin/contracts/access/AccessControl.sol",
         revokeRole: "@openzeppelin/contracts/access/AccessControl.sol",
       },
-      deployedOnBlock: 39845029,
+      deployedOnBlock: 39857384,
     },
   },
 } as const;
