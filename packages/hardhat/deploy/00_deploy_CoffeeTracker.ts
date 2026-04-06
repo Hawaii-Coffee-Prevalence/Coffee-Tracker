@@ -12,7 +12,7 @@ const deployCoffeeTracker: DeployFunction = async function (hre: HardhatRuntimeE
     from: deployer,
     args: [],
     log: true,
-    waitConfirmations: 5,
+    waitConfirmations: hre.network.name === "localhost" || hre.network.name === "hardhat" ? 1 : 5,
   });
 
   const adminWallet = process.env.ADMIN_WALLET;

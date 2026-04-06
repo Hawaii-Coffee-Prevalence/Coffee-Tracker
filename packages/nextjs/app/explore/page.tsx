@@ -56,6 +56,15 @@ const ExplorePage: NextPage = () => {
     return filters.sort === "oldest" ? list : list.reverse();
   }, [allBatches, filters, searchQuery, txHashMap]);
 
+  const tableTxHashMap = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(txHashMap).map(([batchId, hashes]) => [
+        batchId,
+        hashes?.verified || hashes?.distributed || hashes?.roasted || hashes?.processed || hashes?.harvested,
+      ]),
+    );
+  }, [txHashMap]);
+
   const { paginatedItems, currentPage, totalPages, pageSize, goToPage, setPageSize } = useBatchPagination(batches);
 
   return (
@@ -77,7 +86,7 @@ const ExplorePage: NextPage = () => {
       <BatchTable
         batches={isLoading ? undefined : paginatedItems}
         isLoading={isLoading}
-        txHashMap={Object.fromEntries(Object.entries(txHashMap).map(([k, v]) => [k, v?.harvested || "0x0"]))}
+        txHashMap={tableTxHashMap}
         pagination={
           !isLoading ? { currentPage, totalPages, totalItems: batches.length, pageSize, goToPage } : undefined
         }

@@ -111,43 +111,40 @@ export const useCoffeeTracker = () => {
   const { data: harvestedEvents, isLoading: harvestedEventsLoading } = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Harvested",
-    fromBlock: 0n,
   });
 
   const { data: processedEvents, isLoading: processedEventsLoading } = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Processed",
-    fromBlock: 0n,
   });
 
   const { data: roastedEvents, isLoading: roastedEventsLoading } = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Roasted",
-    fromBlock: 0n,
   });
 
   const { data: distributedEvents, isLoading: distributedEventsLoading } = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Distributed",
-    fromBlock: 0n,
   });
 
   const { data: verifiedEvents, isLoading: verifiedEventsLoading } = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Verified",
-    fromBlock: 0n,
   });
 
   const txHashMap = useMemo((): Record<string, BatchTxHashes> => {
     const map: Record<string, BatchTxHashes> = {};
 
     const assign = (
-      events: { args?: { batchId?: bigint }; transactionHash?: `0x${string}` }[] | undefined,
+      events: { args?: { batchId?: bigint } | unknown[]; transactionHash?: `0x${string}` }[] | undefined,
       key: keyof BatchTxHashes,
     ) => {
       if (!events) return;
       events.forEach(e => {
-        const id = e.args?.batchId?.toString();
+        const args = e.args as { batchId?: bigint } | unknown[] | undefined;
+        const batchId = (Array.isArray(args) ? args[0] : args?.batchId) as bigint | undefined;
+        const id = batchId?.toString();
         if (!id || !e.transactionHash) return;
         if (!map[id]) map[id] = {};
         if (!map[id][key]) map[id][key] = e.transactionHash;

@@ -1,11 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Skeleton from "~~/components/Skeleton";
 import { useCoffeeTracker } from "~~/hooks/useCoffeeTracker";
 import { REGIONS } from "~~/utils/coffee";
 
 const HomeLiveScroller = () => {
-  const { stats } = useCoffeeTracker();
+  const { stats, isLoading } = useCoffeeTracker();
 
   const verifiedBatches = stats?.recentBatches.filter(b => b.verified).slice(0, 10) ?? [];
   const tickerItems = [...verifiedBatches, ...verifiedBatches];
@@ -24,13 +25,17 @@ const HomeLiveScroller = () => {
         </div>
 
         {/* Divider */}
-        <span className="text-muted shrink-0">|</span>
+        <div className="h-4 w-px bg-base-300 shrink-0" aria-hidden="true" />
 
         {/* Ticker */}
-        {verifiedBatches.length > 0 ? (
-          <div className="flex-1 overflow-hidden relative">
+        <div className="flex-1 overflow-hidden relative min-h-4 flex items-center" aria-busy={isLoading}>
+          {isLoading || verifiedBatches.length === 0 ? (
+            <div className="flex w-full text-sm leading-none items-center">
+              <Skeleton className="h-3 w-full" />
+            </div>
+          ) : (
             <motion.div
-              className="flex w-max text-sm leading-none"
+              className="flex w-max text-sm leading-none items-center"
               animate={{ x: ["0%", "-50%"] }}
               transition={{ duration: 100, ease: "linear", repeat: Infinity }}
             >
@@ -44,10 +49,8 @@ const HomeLiveScroller = () => {
                 </span>
               ))}
             </motion.div>
-          </div>
-        ) : (
-          <p className="text-sm text-muted">No verified batches yet</p>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
