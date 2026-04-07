@@ -9,7 +9,7 @@ import { CoffeeBatch } from "~~/types/coffee";
 type BatchTableProps = {
   batches: CoffeeBatch[] | undefined;
   isLoading?: boolean;
-  txHashMap: Record<string, `0x${string}`>;
+  txHashMap: Record<string, `0x${string}` | undefined>;
   pagination?: PaginationConfig;
 };
 

@@ -33,10 +33,15 @@ export const MUG_TRAITS: Trait[] = [
 export const STEAM_TRAITS: Trait[] = [
   { name: "1-line", rarity: "common" },
   { name: "2-line", rarity: "common" },
-  { name: "3-line", rarity: "uncommon" },
-  { name: "ribbon", rarity: "uncommon" },
+  { name: "3-line", rarity: "common" },
+  { name: "ribbon", rarity: "common" },
+  { name: "swirl", rarity: "uncommon" },
+  { name: "mini-star", rarity: "uncommon" },
+  { name: "headphones", rarity: "uncommon" },
+  { name: "heart", rarity: "uncommon" },
+  { name: "music1", rarity: "rare" },
+  { name: "music2", rarity: "rare" },
   { name: "happy", rarity: "rare" },
-  { name: "heart", rarity: "rare" },
   { name: "star", rarity: "rare" },
   { name: "skull", rarity: "epic" },
   { name: "sun", rarity: "epic" },
@@ -103,12 +108,10 @@ export const generateNftBuffer = async (params: {
   const regionKey = sanitize(params.region);
   const regionBgPath = path.join(baseDir, "backgrounds", `${regionKey}.png`);
   const bgPath = fs.existsSync(regionBgPath) ? regionBgPath : path.join(baseDir, "backgrounds", "other.png");
+  const mugPath = path.join(baseDir, "mugs", `${params.mug}.png`);
+  const bandPath = path.join(baseDir, "bands", STAGE_FOLDERS[params.stage], `${params.band}.png`);
 
-  const layerPaths = [
-    bgPath,
-    path.join(baseDir, "mugs", `${params.mug}.png`),
-    path.join(baseDir, "bands", STAGE_FOLDERS[params.stage], `${params.band}.png`),
-  ];
+  const layerPaths = [bgPath, mugPath, bandPath];
 
   const showLiquid = params.stage === "Roasted" || params.stage === "Distributed";
   if (showLiquid) {

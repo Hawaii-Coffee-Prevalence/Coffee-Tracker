@@ -20,14 +20,14 @@ const outfit = Outfit({
 
 export const metadata = getMetadata({
   title: "KopeChain",
-  description: "Track Local Hawaiian Coffee",
+  description: "Transparent provenance secured on the blockchain.",
 });
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <html suppressHydrationWarning className={`${cormorant.variable} ${outfit.variable}`}>
       <body>
-        <ThemeProvider enableSystem>
+        <ThemeProvider enableSystem={false} defaultTheme="light">
           <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
         </ThemeProvider>
       </body>

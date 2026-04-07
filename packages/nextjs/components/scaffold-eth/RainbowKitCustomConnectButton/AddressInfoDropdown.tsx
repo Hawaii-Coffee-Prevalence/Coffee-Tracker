@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import { NetworkOptions } from "./NetworkOptions";
 import { getAddress } from "viem";
 import { Address } from "viem";
@@ -44,7 +44,7 @@ export const AddressInfoDropdown = ({ address, ensAvatar, displayName }: Address
   return (
     <>
       <details ref={dropdownRef} className="dropdown dropdown-end leading-3 group">
-        <summary className="btn bg-primary text-primary-content border-none btn-sm p-2 shadow-md dropdown-toggle gap-2 h-auto! font-sans text-xs font-medium tracking-[0.1em] uppercase">
+        <summary className="btn bg-primary text-primary-content border-none btn-sm p-2 shadow-md dropdown-toggle gap-2 !h-auto font-sans text-xs font-medium tracking-[0.1em] uppercase">
           <div className="bg-white/20 p-[2px] rounded-full">
             <BlockieAvatar address={checkSumAddress} size={20} ensImage={ensAvatar} />
           </div>
@@ -57,20 +57,22 @@ export const AddressInfoDropdown = ({ address, ensAvatar, displayName }: Address
         <ul className="dropdown-content menu p-2 mt-2 bg-base-100 border border-base-300 rounded-xl shadow-lg w-52 list-none gap-1 z-50">
           <NetworkOptions hidden={!selectingNetwork} />
 
+          {/* TODO: FINISH PROFILE PAGE
           <li className={selectingNetwork ? "hidden" : ""}>
             <Link
               href="/profile"
-              className="h-8 btn-sm rounded-xl! flex gap-3 py-3 text-base-content bg-transparent hover:bg-base-200 active:!bg-base-200 active:!text-base-content"
+              className="h-8 btn-sm !rounded-xl flex gap-3 py-3 text-base-content bg-transparent hover:bg-base-200 active:!bg-base-200 active:!text-base-content"
               onClick={closeDropdown}
             >
               <span className="whitespace-nowrap">Profile</span>
             </Link>
           </li>
+          */}
 
           <li className={selectingNetwork ? "hidden" : ""}>
             <button
               type="button"
-              className="h-8 btn-sm rounded-xl! flex gap-3 py-3 text-base-content bg-transparent hover:bg-base-200 active:!bg-base-200 active:!text-base-content"
+              className="h-8 btn-sm !rounded-xl flex gap-3 py-3 text-base-content bg-transparent hover:bg-base-200 active:!bg-base-200 active:!text-base-content"
               onClick={() => handleCopy(checkSumAddress)}
             >
               <span className="whitespace-nowrap transition-opacity duration-200">
@@ -81,7 +83,7 @@ export const AddressInfoDropdown = ({ address, ensAvatar, displayName }: Address
 
           <li className={selectingNetwork ? "hidden" : ""}>
             <button
-              className="h-8 btn-sm rounded-xl! flex gap-3 py-3 text-error bg-transparent hover:bg-base-200 active:!bg-base-200 active:!text-base-content"
+              className="h-8 btn-sm !rounded-xl flex gap-3 py-3 text-error bg-transparent hover:bg-base-200 active:!bg-base-200 active:!text-base-content"
               type="button"
               onClick={() => disconnect()}
             >

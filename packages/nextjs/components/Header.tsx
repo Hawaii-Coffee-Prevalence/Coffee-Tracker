@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAccount } from "wagmi";
@@ -88,8 +89,15 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-20 flex items-center justify-between px-6 h-16 bg-base-100 border-b border-base-300 shadow-none">
       <div className="flex items-center gap-6">
-        <Link href="/" className="font-serif text-2xl font-semibold text-base-content tracking-tight">
-          Kope<span className="italic text-accent">Chain</span>
+        <Link href="/" className="inline-flex items-center" aria-label="home">
+          <Image
+            src="/kopechain.png"
+            alt="KopeChain"
+            width={1200}
+            height={346}
+            className="h-[32px] w-auto shrink-0 object-contain"
+            priority
+          />
         </Link>
 
         <ul className="hidden lg:flex items-center gap-1 list-none">
@@ -98,11 +106,13 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="flex items-center">
-          <span className="text-nav-link p-2 text-muted hidden md:inline">Scan QR Code</span>
+        <div className="flex items-center gap-1">
+          <span className="text-nav-link text-muted hidden md:inline">Scan QR Code</span>
           <button
+            type="button"
             onClick={() => setQrOpen(true)}
-            className="flex items-center justify-center p-2 rounded-full hover:bg-base-content/5 transition-colors hover:cursor-pointer"
+            className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-base-content/5 transition-colors hover:cursor-pointer"
+            aria-label="Scan QR Code"
           >
             <QrCodeIcon className="h-6 w-6" />
           </button>
@@ -113,7 +123,10 @@ const Header = () => {
         <RainbowKitCustomConnectButton />
 
         <details className="dropdown dropdown-end lg:hidden" ref={burgerMenuRef}>
-          <summary className="btn btn-ghost btn-sm btn-borderless hover:border-base-300">
+          <summary
+            className="btn btn-ghost btn-sm h-10 min-h-10 w-10 p-0 hover:border-base-300"
+            aria-label="Open navigation menu"
+          >
             <Bars3Icon className="h-6 w-6" />
           </summary>
           <ul

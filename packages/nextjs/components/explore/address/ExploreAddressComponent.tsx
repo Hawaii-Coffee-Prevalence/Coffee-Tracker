@@ -106,52 +106,64 @@ const ExploreAddressComponent = ({ address }: ExploreAddressComponentProps) => {
   const [historyView, setHistoryView] = useState<HistoryView>("activity");
   const targetNetwork = useSelectedNetwork();
   const { data: deployedContractInfo } = useDeployedContractInfo({ contractName: "CoffeeTracker" });
+  const fromBlock = BigInt((deployedContractInfo as { deployedOnBlock?: number } | undefined)?.deployedOnBlock ?? 0);
   const { data: balanceData } = useBalance({ address });
   const { userRole, userBatches, isLoading } = useUserBatches(address);
+  const isActivityView = historyView === "activity";
 
   const harvestedEvents = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Harvested",
-    fromBlock: 0n,
+    fromBlock,
     filters: { farmer: address },
     blockData: true,
     transactionData: true,
+    enabled: isActivityView,
+    blocksBatchSize: 5000,
   });
 
   const processedEvents = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Processed",
-    fromBlock: 0n,
+    fromBlock,
     filters: { processor: address },
     blockData: true,
     transactionData: true,
+    enabled: isActivityView,
+    blocksBatchSize: 5000,
   });
 
   const roastedEvents = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Roasted",
-    fromBlock: 0n,
+    fromBlock,
     filters: { roaster: address },
     blockData: true,
     transactionData: true,
+    enabled: isActivityView,
+    blocksBatchSize: 5000,
   });
 
   const distributedEvents = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Distributed",
-    fromBlock: 0n,
+    fromBlock,
     filters: { distributor: address },
     blockData: true,
     transactionData: true,
+    enabled: isActivityView,
+    blocksBatchSize: 5000,
   });
 
   const verifiedEvents = useScaffoldEventHistory({
     contractName: "CoffeeTracker",
     eventName: "Verified",
-    fromBlock: 0n,
+    fromBlock,
     filters: { verifier: address },
     blockData: true,
     transactionData: true,
+    enabled: isActivityView,
+    blocksBatchSize: 5000,
   });
 
   const activity = useMemo(() => {
@@ -219,11 +231,20 @@ const ExploreAddressComponent = ({ address }: ExploreAddressComponentProps) => {
   const role = userRole && userRole !== "None" ? userRole : "User";
   const isPending =
     isLoading ||
-    harvestedEvents.isLoading ||
-    processedEvents.isLoading ||
-    roastedEvents.isLoading ||
-    distributedEvents.isLoading ||
-    verifiedEvents.isLoading;
+    (isActivityView &&
+      (harvestedEvents.isLoading ||
+        processedEvents.isLoading ||
+        roastedEvents.isLoading ||
+        distributedEvents.isLoading ||
+        verifiedEvents.isLoading));
+
+  const eventError = isActivityView
+    ? harvestedEvents.error ||
+      processedEvents.error ||
+      roastedEvents.error ||
+      distributedEvents.error ||
+      verifiedEvents.error
+    : null;
 
   return (
     <div className="w-full min-h-[calc(100vh-4rem)] bg-base-200/50">
@@ -295,6 +316,10 @@ const ExploreAddressComponent = ({ address }: ExploreAddressComponentProps) => {
             isPending ? (
               <div className="flex items-center justify-center py-20">
                 <span className="loading loading-spinner loading-lg text-primary"></span>
+              </div>
+            ) : eventError ? (
+              <div className="mt-8 rounded-2xl border border-dashed border-warning/30 bg-warning/10 p-6 text-sm text-base-content">
+                Unable to load on-chain activity right now. The RPC provider may be rate-limiting requests.
               </div>
             ) : activity.length === 0 ? (
               <div className="mt-8 rounded-2xl border border-dashed border-base-300 bg-base-200/40 p-6 text-sm text-muted">
