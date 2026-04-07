@@ -33,7 +33,7 @@ const HomeMap = () => {
 
       <p className="text-center text-hint mt-2">
         {isTouchDevice
-          ? "Tap markers to explore · Pinch to zoom · Drag to zoom · Two-finger drag to tilt"
+          ? "Tap markers to explore · Pinch to zoom · Drag to pan · Two-finger drag to tilt"
           : "Click markers to explore · Scroll to zoom · Left-click drag to pan · Right-click drag to tilt"}
       </p>
     </>

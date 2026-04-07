@@ -90,7 +90,14 @@ const Header = () => {
     <header className="sticky top-0 z-20 flex items-center justify-between px-6 h-16 bg-base-100 border-b border-base-300 shadow-none">
       <div className="flex items-center gap-6">
         <Link href="/" className="inline-flex items-center" aria-label="home">
-          <Image src="/kopechain.png" alt="KopeChain" width={1200} height={346} className="h-8 w-auto" priority />
+          <Image
+            src="/kopechain.png"
+            alt="KopeChain"
+            width={1200}
+            height={346}
+            className="h-[32px] w-auto shrink-0 object-contain"
+            priority
+          />
         </Link>
 
         <ul className="hidden lg:flex items-center gap-1 list-none">
